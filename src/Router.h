@@ -6,5 +6,7 @@
 class Router {
 public:
   Router();
+private:
+
 };
 #endif // !ROUTER_H
