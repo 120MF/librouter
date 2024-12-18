@@ -20,8 +20,8 @@ struct ArcNode {
 template<typename T>
 struct Graph {
     std::atomic<VertexNode<T> > vertices[MAX_VERTEX];
-    int vex_count;
-    int arc_num;
+    std::atomic<int> vex_count;
+    std::atomic<int> arc_num;
 };
 
 #endif //ADJACENCYLIST_H
