@@ -1,5 +1,8 @@
+#include "NetworkManager.h"
 #include "Router.h"
+
 int main() {
-  Router router;
+  auto nm = NetworkManager::getInstance();
+  nm->printGraph();
   return 0;
 }

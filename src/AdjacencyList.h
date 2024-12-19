@@ -2,26 +2,26 @@
 #define ADJACENCYLIST_H
 
 #include <atomic>
+#include <unordered_map>
 
-constexpr unsigned int MAX_VERTEX = 0xFFFFFFFF;
-
-template<typename T>
-struct VertexNode {
-    T data;
-    VertexNode *next;
-};
-
-struct ArcNode {
-    int adjvex;
-    ArcNode *next;
-    int w;
-};
+#include "Hashmap.h"
 
 template<typename T>
-struct Graph {
-    std::atomic<VertexNode<T> > vertices[MAX_VERTEX];
-    std::atomic<int> vex_count;
-    std::atomic<int> arc_num;
+class Graph {
+public:
+    void addNode(T node);
+
+    void removeNode(T node);
+
+    void addEdge(T u, T v, int weight);
+
+    void removeEdge(int u, int v);
+
+    void printGraph();
+
+private:
+    std::atomic<Hashmap<T, Hashmap<T, int> > > adjList;
 };
+
 
 #endif //ADJACENCYLIST_H

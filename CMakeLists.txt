@@ -9,6 +9,8 @@ add_library(librouter src/Router.cpp src/Router.h
         src/NetworkManager.h
         src/AdjacencyList.cpp
         src/AdjacencyList.h
+        src/Hashmap.cpp
+        src/Hashmap.h
 )
 add_executable(example example.cpp)
 target_include_directories(example PRIVATE src/)

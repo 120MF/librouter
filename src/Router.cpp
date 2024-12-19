@@ -1,5 +1,5 @@
 #include "Router.h"
 
-Router::Router() {
-    std::cout << "Hello World!" << std::endl;
+Router::Router(const int id) : _id(id) {
+    std::cout << "router initiliazed" << std::endl;
 }
