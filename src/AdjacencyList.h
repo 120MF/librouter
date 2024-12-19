@@ -3,12 +3,7 @@
 
 #include "Hashmap.h"
 #include "Router.h"
-
-template<typename T>
-struct Edge {
-    T to_vex;
-    int weight;
-};
+#include "List.h"
 
 template<typename T>
 class Graph {

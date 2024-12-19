@@ -6,15 +6,18 @@
 
 template<typename T>
 void Graph<T>::addNode(T node) {
-    // adjList.insert(node);
+    // adjList.set(node);
 }
 
 template<typename T>
 void Graph<T>::removeNode(T node) {
-    // adjList.erase(node);
-    // adjList.erase_if([node](auto &e) {
-    //    std::cout << e << std::endl;
-    // });
+    adjList.erase(node);
+    auto func = [node](const List<Router>& edges) {
+        const Node<Router>* list_head = edges.head;
+        do {
+            // if (list_head->next)
+        } while (list_head != nullptr);
+    };
 }
 
 template<typename T>
