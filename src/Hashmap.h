@@ -34,14 +34,15 @@ public:
 
     Value erase(const Key &key);
 
-    Bucket<Key, Value> get_next_bucket(Key &key, Value &value);
-
-private:
     Bucket<Key, Value> *Hashtable[HASH_SIZE];
+
     uint32_t used_buckets = 0;
+
+    bool delete_flags[HASH_SIZE] = {false};
+private:
     uint32_t size = HASH_SIZE;
     Func hashCompute;
-    bool delete_flags[HASH_SIZE] = {false};
+
 };
 
 

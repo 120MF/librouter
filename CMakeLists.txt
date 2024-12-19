@@ -4,6 +4,8 @@ project(librouter)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
+include_directories(3rdparty/uuid_v4)
+
 add_library(librouter src/Router.cpp src/Router.h
         src/NetworkManager.cpp
         src/NetworkManager.h

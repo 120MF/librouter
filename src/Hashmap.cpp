@@ -2,6 +2,9 @@
 
 #include <stdexcept>
 
+#include "AdjacencyList.h"
+#include "Router.h"
+
 template<typename Key, typename Value, typename Func>
 Hashmap<Key, Value, Func>::Hashmap() {
     for (auto &i: Hashtable) {
@@ -71,3 +74,7 @@ Value Hashmap<Key, Value, Func>::erase(const Key &key) {
     }
     throw std::invalid_argument("Key not found.");
 }
+
+
+
+template class Hashmap<Router, Edge<Router>, RouterHashCompute>;

@@ -1,7 +1,8 @@
 #ifndef NETWORKMANAGER_H
 #define NETWORKMANAGER_H
 #include "AdjacencyList.h"
-#include "Router.h"
+
+class Router;
 
 class NetworkManager {
 public:
@@ -15,6 +16,7 @@ public:
 
 private:
     NetworkManager();
+    static NetworkManager* _instance;
 
     Graph<Router> graph;
 

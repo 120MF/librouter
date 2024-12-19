@@ -2,14 +2,14 @@
 #include "Router.h"
 
 NetworkManager *NetworkManager::getInstance() {
-    static NetworkManager nm;
-    return &nm;
+    return NetworkManager::_instance;
 }
+NetworkManager* NetworkManager::_instance = new NetworkManager;
 
 NetworkManager::NetworkManager(): graph() {
-    auto router1 = Router(1);
-    auto router2 = Router(2);
-    auto router3 = Router(3);
+    auto router1 = Router();
+    auto router2 = Router();
+    auto router3 = Router();
     graph.addNode(router1);
     graph.addNode(router2);
     graph.addNode(router3);

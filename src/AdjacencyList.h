@@ -1,10 +1,14 @@
 #ifndef ADJACENCYLIST_H
 #define ADJACENCYLIST_H
 
-#include <atomic>
-#include <unordered_map>
-
 #include "Hashmap.h"
+#include "Router.h"
+
+template<typename T>
+struct Edge {
+    T to_vex;
+    int weight;
+};
 
 template<typename T>
 class Graph {
@@ -20,7 +24,7 @@ public:
     void printGraph();
 
 private:
-    std::atomic<Hashmap<T, Hashmap<T, int> > > adjList;
+    Hashmap<T, Edge<T>, RouterHashCompute > adjList;
 };
 
 

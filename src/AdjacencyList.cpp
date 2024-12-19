@@ -2,42 +2,39 @@
 
 #include <iostream>
 
+#include "Router.h"
+
 template<typename T>
 void Graph<T>::addNode(T node) {
-    auto list = adjList.load();
-    list.set(node, nullptr);
-    adjList.store(list);
+    // adjList.insert(node);
 }
 
 template<typename T>
 void Graph<T>::removeNode(T node) {
-    auto list = adjList.load();
-    list.erase(node);
-
-    for (auto &[key, neighbors]: list) {
-        neighbors.erase(node);
-    }
+    // adjList.erase(node);
+    // adjList.erase_if([node](auto &e) {
+    //    std::cout << e << std::endl;
+    // });
 }
 
 template<typename T>
 void Graph<T>::addEdge(T u, T v, int weight) {
-    adjList[u][v] = weight;
-    adjList[v][u] = weight;
+    // adjList.insert(u, std::tuple<T,int>(v,weight));
+    // adjList.insert(v, std::tuple<T,int>(u,weight));
+
 }
 
 template<typename T>
 void Graph<T>::removeEdge(int u, int v) {
-    adjList[u].erase(v);
-    adjList[v].erase(u);
+    // adjList[u].erase(v);
+    // adjList[v].erase(u);
 }
 
 template<typename T>
 void Graph<T>::printGraph() {
-    for (const auto &[node, neighbors]: adjList) {
-        std::cout << node << ": ";
-        for (const auto &[neighbor, weight]: neighbors) {
-            std::cout << "(" << neighbor << ", " << weight << ") ";
-        }
-        std::cout << std::endl;
-    }
+    // adjList.visit_all([](auto &k) {
+    //
+    // });
 }
+
+template class Graph<Router>;
