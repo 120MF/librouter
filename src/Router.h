@@ -37,7 +37,7 @@ public:
 
 struct RouterHashCompute {
   uint32_t operator()(const Router &router) const {
-    return std::hash<std::string>()(router.get_uuid()) % UINT16_MAX;
+    return std::hash<std::string>()(router.get_uuid());
   }
 };
 

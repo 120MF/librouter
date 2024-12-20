@@ -3,12 +3,13 @@
 #include <cstdint>
 #include <functional>
 
-constexpr uint32_t HASH_SIZE = UINT16_MAX;
+constexpr uint32_t MAX_HASH_SIZE = UINT16_MAX+1;
+constexpr uint32_t INIT_HASH_SIZE = UINT8_MAX+1;
 
 template<typename T>
 struct HashCompute {
-    uint32_t operator()(const T &key) {
-        return std::hash<T>()(key) % HASH_SIZE;
+    uint32_t operator()(const T &key) const {
+        return std::hash<T>()(key);
     }
 };
 
@@ -37,10 +38,11 @@ public:
     void visitAll(std::function<void(Key &, Value &)> func);
 
 private:
-    Bucket<Key, Value> *Hashtable[HASH_SIZE];
+    Bucket<Key, Value> **Hashtable;
+    void resize();
+    float load_factor = 0.75;
     uint32_t used_buckets = 0;
-    bool delete_flags[HASH_SIZE] = {false};
-    uint32_t size = HASH_SIZE;
+    uint32_t size = INIT_HASH_SIZE;
     Func hashCompute;
 };
 
