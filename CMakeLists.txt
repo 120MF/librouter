@@ -1,9 +1,11 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.26)
 
 project(librouter)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+option(GENERATE_EXAMPLE_PROGRAM "Compile the example.cpp into an executable." ON)
 
 # a quick fix, create a fork of stduuid to exterminate it.
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
@@ -14,18 +16,22 @@ set(UUID_USING_CXX20_SPAN ON)
 set(UUID_ENABLE_INSTALL OFF)
 add_subdirectory(3rdparty/stduuid)
 include_directories(3rdparty/stduuid/include)
+include_directories(src)
 
 
 add_library(librouter
         src/Router.cpp src/Router.h
         src/NetworkManager.cpp
         src/NetworkManager.h
-        src/AdjacencyList.cpp
-        src/AdjacencyList.h
-        src/Hashmap.cpp
-        src/Hashmap.h
+        src/data_structure/AdjacencyList.cpp
+        src/data_structure/AdjacencyList.h
+        src/data_structure/Hashmap.cpp
+        src/data_structure/Hashmap.h
 )
 target_link_libraries(librouter stduuid)
+
+if(${GENERATE_EXAMPLE_PROGRAM})
 add_executable(example example.cpp)
 target_include_directories(example PRIVATE src/)
 target_link_libraries(example librouter)
+endif ()

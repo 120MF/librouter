@@ -1,6 +1,6 @@
 #ifndef NETWORKMANAGER_H
 #define NETWORKMANAGER_H
-#include "AdjacencyList.h"
+#include "data_structure/AdjacencyList.h"
 #include "Router.h"
 
 class Router;
