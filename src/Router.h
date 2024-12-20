@@ -7,6 +7,8 @@ class Router {
 public:
   Router();
   explicit Router(const std::string& name);
+  explicit Router(uint16_t delay);
+  Router(const std::string& name, uint16_t delay);
 
   friend bool operator==(const Router &lhs, const Router &rhs) {
     return lhs._uuid == rhs._uuid;
@@ -23,10 +25,13 @@ public:
 private:
   std::string _uuid;
   std::string _name;
+  uint16_t _delay{};
 
 public:
   [[nodiscard]] const std::string &get_uuid() const {
     return _uuid;
+  }[[nodiscard]] const std::string &get_name() const {
+    return _name;
   }
 };
 
