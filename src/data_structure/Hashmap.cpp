@@ -49,7 +49,7 @@ bool Hashmap<Key, Value, Func>::set(const Key &key, const Value &value) {
 template<typename Key, typename Value, typename Func>
 void Hashmap<Key, Value, Func>::resize() {
     uint32_t new_size = size * 2;
-    Bucket<Key, Value> **new_table = new Bucket<Key,Value> *;
+    Bucket<Key, Value> **new_table = new Bucket<Key,Value> *[new_size];
     for (uint32_t i = 0; i < new_size; i++) {
         new_table[i] = nullptr;
     }
