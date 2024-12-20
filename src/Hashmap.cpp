@@ -83,8 +83,9 @@ Value Hashmap<Key, Value, Func>::erase(const Key &key) {
 
 template<typename Key, typename Value, typename Func>
 void Hashmap<Key, Value, Func>::visitAll(std::function<void(Key &, Value &)> func) {
+    if (used_buckets == 0) return;
     uint32_t visited = 0;
-    for (uint32_t t; t < size && visited < used_buckets; t++) {
+    for (uint32_t t = 0; t < size && visited < used_buckets; t++) {
         if (Hashtable[t] != nullptr) {
             visited++;
             func(Hashtable[t]->key, Hashtable[t]->value);

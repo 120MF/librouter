@@ -4,5 +4,6 @@
 int main() {
   auto nm = NetworkManager::getInstance();
   nm->printGraph();
+  delete nm;
   return 0;
 }

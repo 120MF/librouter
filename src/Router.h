@@ -17,7 +17,7 @@ public:
   }
 
   friend std::ostream &operator<<(std::ostream &os, const Router &obj) {
-    return os << obj._uuid;
+    return os << obj._name;
   }
 
 private:
