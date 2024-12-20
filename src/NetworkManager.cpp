@@ -7,9 +7,9 @@ NetworkManager *NetworkManager::getInstance() {
 NetworkManager* NetworkManager::_instance = new NetworkManager;
 
 NetworkManager::NetworkManager(): graph() {
-    auto router1 = Router();
-    auto router2 = Router();
-    auto router3 = Router();
+    auto router1 = Router("1");
+    auto router2 = Router("2");
+    auto router3 = Router("3");
     graph.addNode(router1);
     graph.addNode(router2);
     graph.addNode(router3);

@@ -1,9 +1,16 @@
 #include "Router.h"
-
+#include "uuid.h"
 
 Router::Router() {
-    UUIDv4::UUIDGenerator<std::mt19937_64> uuidGenerator;
-    const UUIDv4::UUID uuid = uuidGenerator.getUUID();
-    this->_uuid = uuid;
-    std::cout << "router " << _uuid << " initiliazed" << std::endl;
+    uuids::uuid const id = uuids::uuid_system_generator{}();
+    this->_uuid = uuids::to_string(id);
+    this->_name = " ";
+    std::cout << "Unnamed router initiliazed" << std::endl;
+}
+
+Router::Router(const std::string& name) {
+    uuids::uuid const id = uuids::uuid_system_generator{}();
+    this->_uuid = uuids::to_string(id);
+    this->_name = name;
+    std::cout << "router " << name << " initiliazed" << std::endl;
 }

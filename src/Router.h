@@ -3,11 +3,10 @@
 
 #include <cstdint>
 #include <iostream>
-#include <uuid_v4.h>
-
 class Router {
 public:
-  explicit Router();
+  Router();
+  explicit Router(const std::string& name);
 
   friend bool operator==(const Router &lhs, const Router &rhs) {
     return lhs._uuid == rhs._uuid;
@@ -22,17 +21,18 @@ public:
   }
 
 private:
-  UUIDv4::UUID _uuid;
+  std::string _uuid;
+  std::string _name;
 
 public:
-  [[nodiscard]] const UUIDv4::UUID &uuid() const {
+  [[nodiscard]] const std::string &get_uuid() const {
     return _uuid;
   }
 };
 
 struct RouterHashCompute {
   uint32_t operator()(const Router &router) const {
-    return std::hash<std::string>()(router.uuid().bytes()) % UINT32_MAX;
+    return std::hash<std::string>()(router.get_uuid()) % UINT16_MAX;
   }
 };
 
