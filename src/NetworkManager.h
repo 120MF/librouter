@@ -16,9 +16,10 @@ public:
 
 private:
     NetworkManager();
-    static NetworkManager* _instance;
 
-    Graph<Router> graph;
+    static NetworkManager *_instance;
+
+    Graph<Router, RouterHashCompute> graph;
 
 public:
     void printGraph();

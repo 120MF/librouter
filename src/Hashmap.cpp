@@ -1,8 +1,6 @@
 #include "Hashmap.h"
 
 #include <stdexcept>
-
-#include "AdjacencyList.h"
 #include "Router.h"
 
 template<typename Key, typename Value, typename Func>
@@ -26,20 +24,28 @@ bool Hashmap<Key, Value, Func>::set(const Key &key, const Value &value) {
     uint32_t start = val;
     const uint32_t end = (start > 0) ? ((start - 1) % size) : size - 1;
 
+    bool has_key = false;
     while (start != end) {
         if (Hashtable[start] == nullptr) break;
-        if (Hashtable[start]->key == key) return false;
+        if (Hashtable[start]->key == key) {
+            has_key = true;
+            break;
+        }
         start = (start + 1) % size;
     }
     if (start == end) return false;
+
+    if (has_key) delete Hashtable[start];
+    else {
+        delete_flags[start] = false;
+        ++used_buckets;
+    }
     Hashtable[start] = new Bucket<Key, Value>(key, value);
-    delete_flags[start] = false;
-    ++used_buckets;
     return true;
 }
 
 template<typename Key, typename Value, typename Func>
-Value Hashmap<Key, Value, Func>::get(const Key &key) {
+Value &Hashmap<Key, Value, Func>::get(const Key &key) {
     if (used_buckets == 0) throw std::invalid_argument("Key not found.");
 
     const uint32_t val = hashCompute(key);
@@ -75,6 +81,16 @@ Value Hashmap<Key, Value, Func>::erase(const Key &key) {
     throw std::invalid_argument("Key not found.");
 }
 
+template<typename Key, typename Value, typename Func>
+void Hashmap<Key, Value, Func>::visitAll(std::function<void(Key &, Value &)> func) {
+    uint32_t visited = 0;
+    for (uint32_t t; t < size && visited < used_buckets; t++) {
+        if (Hashtable[t] != nullptr) {
+            visited++;
+            func(Hashtable[t]->key, Hashtable[t]->value);
+        }
+    }
+}
 
-
-template class Hashmap<Router, Edge<Router>, RouterHashCompute>;
+template class Hashmap<Router, int, RouterHashCompute>;
+template class Hashmap<Router, Hashmap<Router, int, RouterHashCompute>, RouterHashCompute>;

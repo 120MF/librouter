@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <uuid_v4.h>
 
 class Router {
 public:
@@ -16,18 +17,22 @@ public:
     return !(lhs == rhs);
   }
 
+  friend std::ostream &operator<<(std::ostream &os, const Router &obj) {
+    return os << obj._uuid;
+  }
+
 private:
-  std::string _uuid;
+  UUIDv4::UUID _uuid;
 
 public:
-  [[nodiscard]] std::string uuid() const {
+  [[nodiscard]] const UUIDv4::UUID &uuid() const {
     return _uuid;
   }
 };
 
 struct RouterHashCompute {
-  uint32_t operator()(const Router& router) const {
-    return std::hash<std::string>()(router.uuid()) % UINT32_MAX;
+  uint32_t operator()(const Router &router) const {
+    return std::hash<std::string>()(router.uuid().bytes()) % UINT32_MAX;
   }
 };
 

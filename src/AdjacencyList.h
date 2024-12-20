@@ -5,7 +5,7 @@
 #include "Router.h"
 #include "List.h"
 
-template<typename T>
+template<typename T, typename HashFunc>
 class Graph {
 public:
     void addNode(T node);
@@ -14,12 +14,12 @@ public:
 
     void addEdge(T u, T v, int weight);
 
-    void removeEdge(int u, int v);
+    void removeEdge(T u, T v);
 
     void printGraph();
 
 private:
-    Hashmap<T, Edge<T>, RouterHashCompute > adjList;
+    Hashmap<T, Hashmap<T, int, HashFunc>, HashFunc> adjList;
 };
 
 

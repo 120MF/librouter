@@ -6,7 +6,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 include_directories(3rdparty/uuid_v4)
 
-add_library(librouter src/Router.cpp src/Router.h
+add_library(librouter
+        3rdparty/uuid_v4/uuid_v4.h
+        3rdparty/uuid_v4/endianness.h
+        src/Router.cpp src/Router.h
         src/NetworkManager.cpp
         src/NetworkManager.h
         src/AdjacencyList.cpp

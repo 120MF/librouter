@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <functional>
 
-constexpr uint32_t HASH_SIZE = UINT32_MAX;
+constexpr uint32_t HASH_SIZE = UINT16_MAX;
 
 template<typename T>
 struct HashCompute {
@@ -30,19 +30,18 @@ public:
 
     bool set(const Key &key, const Value &value);
 
-    Value get(const Key &key);
+    Value &get(const Key &key);
 
     Value erase(const Key &key);
 
-    Bucket<Key, Value> *Hashtable[HASH_SIZE];
+    void visitAll(std::function<void(Key &, Value &)> func);
 
-    uint32_t used_buckets = 0;
-
-    bool delete_flags[HASH_SIZE] = {false};
 private:
+    Bucket<Key, Value> *Hashtable[HASH_SIZE];
+    uint32_t used_buckets = 0;
+    bool delete_flags[HASH_SIZE] = {false};
     uint32_t size = HASH_SIZE;
     Func hashCompute;
-
 };
 
 
