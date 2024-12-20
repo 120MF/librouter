@@ -1,6 +1,8 @@
 #ifndef ADJACENCYLIST_H
 #define ADJACENCYLIST_H
 
+#include <memory>
+
 #include "Hashmap.h"
 
 template<typename T, typename HashFunc>
@@ -18,7 +20,7 @@ public:
     void printGraph();
 
 private:
-    Hashmap<T, Hashmap<T, int, HashFunc>, HashFunc> adjList;
+    Hashmap<T, std::shared_ptr<Hashmap<T, int, HashFunc>>, HashFunc> adjList;
 };
 
 
