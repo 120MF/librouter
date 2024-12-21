@@ -27,6 +27,8 @@ add_library(librouter
         src/data_structure/AdjacencyList.h
         src/data_structure/Hashmap.cpp
         src/data_structure/Hashmap.h
+        src/data_structure/PriorityQueue.cpp
+        src/data_structure/PriorityQueue.h
 )
 target_link_libraries(librouter stduuid)
 

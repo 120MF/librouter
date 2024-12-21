@@ -18,6 +18,10 @@ NetworkManager::NetworkManager(): graph() {
     graph.addEdge(router2, router3, 4);
     graph.addEdge(router1, router3, 2);
 
+    printGraph();
+    graph.removeEdge(router1,router2);
+    printGraph();
+
 }
 
 void NetworkManager::printGraph() {
