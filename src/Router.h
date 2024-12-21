@@ -3,6 +3,9 @@
 
 #include <cstdint>
 #include <iostream>
+#include <memory>
+
+
 class Router {
 public:
   Router();
@@ -36,9 +39,19 @@ public:
 };
 
 struct RouterHashCompute {
-  uint32_t operator()(const Router &router) const {
-    return std::hash<std::string>()(router.get_uuid());
+  uint32_t operator()(const std::shared_ptr<Router>& router) const {
+    return std::hash<std::string>()(router->get_uuid());
   }
 };
+
+inline std::ostream &operator<<(std::ostream &os, const std::shared_ptr<Router> &router) {
+  if (router) {
+    os << *router;
+  } else {
+    os << "null";
+  }
+  return os;
+}
+
 
 #endif // !ROUTER_H

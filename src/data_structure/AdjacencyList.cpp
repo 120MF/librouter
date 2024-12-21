@@ -41,4 +41,4 @@ void Graph<T, HashFunc>::printGraph() {
     });
 }
 
-template class Graph<Router, RouterHashCompute>;
+template class Graph<std::shared_ptr<Router>, RouterHashCompute>;

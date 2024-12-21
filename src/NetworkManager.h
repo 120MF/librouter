@@ -20,7 +20,7 @@ private:
 
     static NetworkManager *_instance;
 
-    Graph<Router, RouterHashCompute> graph;
+    Graph<std::shared_ptr<Router>, RouterHashCompute> graph;
 
 public:
     void printGraph();
