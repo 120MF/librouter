@@ -6,10 +6,12 @@ NetworkManager *NetworkManager::getInstance() {
 }
 NetworkManager* NetworkManager::_instance = new NetworkManager;
 
-NetworkManager::NetworkManager(): graph() {
-    auto router1 = std::make_shared<Router>("1");
-    auto router2 = std::make_shared<Router>("2");
-    auto router3 = std::make_shared<Router>("3");
+
+
+NetworkManager::NetworkManager() {
+    auto router1 = new Router("1");
+    auto router2 = new Router("2");
+    auto router3 = new Router("3");
 
     graph.addNode(router1);
     graph.addNode(router2);
@@ -21,6 +23,8 @@ NetworkManager::NetworkManager(): graph() {
     printGraph();
     graph.removeEdge(router1,router2);
     printGraph();
+
+    delete router1,router2,router3;
 
 }
 

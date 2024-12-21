@@ -23,8 +23,8 @@ add_library(librouter
         src/Router.cpp src/Router.h
         src/NetworkManager.cpp
         src/NetworkManager.h
-        src/data_structure/AdjacencyList.cpp
-        src/data_structure/AdjacencyList.h
+        src/data_structure/Graph.cpp
+        src/data_structure/Graph.h
         src/data_structure/Hashmap.cpp
         src/data_structure/Hashmap.h
         src/data_structure/PriorityQueue.cpp

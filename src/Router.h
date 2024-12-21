@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 
+#include "data_structure/PriorityQueue.h"
 
 class Router {
 public:
@@ -29,6 +30,7 @@ private:
   std::string _uuid;
   std::string _name;
   uint16_t _delay{};
+  PriorityQueue<Router*> _queue{};
 
 public:
   [[nodiscard]] const std::string &get_uuid() const {
@@ -39,12 +41,12 @@ public:
 };
 
 struct RouterHashCompute {
-  uint32_t operator()(const std::shared_ptr<Router>& router) const {
+  uint32_t operator()(const Router* router) const {
     return std::hash<std::string>()(router->get_uuid());
   }
 };
 
-inline std::ostream &operator<<(std::ostream &os, const std::shared_ptr<Router> &router) {
+inline std::ostream &operator<<(std::ostream &os, const Router *router) {
   if (router) {
     os << *router;
   } else {

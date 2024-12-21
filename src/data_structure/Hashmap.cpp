@@ -121,6 +121,5 @@ void Hashmap<Key, Value, Func>::visitAll(std::function<void(Key &, Value &)> fun
         }
     }
 }
-template class Hashmap<std::shared_ptr<Router>, int, RouterHashCompute>;
-template class std::shared_ptr<Hashmap<Router, int, RouterHashCompute>>;
-template class Hashmap<std::shared_ptr<Router>, std::shared_ptr<Hashmap<std::shared_ptr<Router>, int, RouterHashCompute>>, RouterHashCompute>;
+template class Hashmap<Router*, int, RouterHashCompute>;
+template class Hashmap<Router*, Hashmap<Router*, int, RouterHashCompute>*, RouterHashCompute>;

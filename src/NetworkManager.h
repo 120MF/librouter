@@ -1,6 +1,6 @@
 #ifndef NETWORKMANAGER_H
 #define NETWORKMANAGER_H
-#include "data_structure/AdjacencyList.h"
+#include "data_structure/Graph.h"
 #include "Router.h"
 
 class Router;
@@ -20,7 +20,7 @@ private:
 
     static NetworkManager *_instance;
 
-    Graph<std::shared_ptr<Router>, RouterHashCompute> graph;
+    Graph<Router*, RouterHashCompute> graph;
 
 public:
     void printGraph();

@@ -1,5 +1,5 @@
-#ifndef ADJACENCYLIST_H
-#define ADJACENCYLIST_H
+#ifndef GRAPH_H
+#define GRAPH_H
 
 #include <memory>
 
@@ -20,8 +20,8 @@ public:
     void printGraph();
 
 private:
-    Hashmap<T, std::shared_ptr<Hashmap<T, int, HashFunc>>, HashFunc> adjList;
+    Hashmap<T, Hashmap<T, int, HashFunc>*, HashFunc> adjList;
 };
 
 
-#endif //ADJACENCYLIST_H
+#endif //GRAPH_H
