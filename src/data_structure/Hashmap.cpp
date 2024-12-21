@@ -121,5 +121,5 @@ void Hashmap<Key, Value, Func>::visitAll(std::function<void(Key &, Value &)> fun
         }
     }
 }
-template class Hashmap<Router*, int, RouterHashCompute>;
-template class Hashmap<Router*, Hashmap<Router*, int, RouterHashCompute>*, RouterHashCompute>;
+template class Hashmap<Router*, uint16_t, RouterHashCompute>;
+template class Hashmap<Router*, Hashmap<Router*, uint16_t, RouterHashCompute>*, RouterHashCompute>;

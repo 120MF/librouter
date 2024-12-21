@@ -30,7 +30,6 @@ private:
   std::string _uuid;
   std::string _name;
   uint16_t _delay{};
-  PriorityQueue<Router*> _queue{};
 
 public:
   [[nodiscard]] const std::string &get_uuid() const {

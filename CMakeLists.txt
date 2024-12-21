@@ -29,6 +29,9 @@ add_library(librouter
         src/data_structure/Hashmap.h
         src/data_structure/PriorityQueue.cpp
         src/data_structure/PriorityQueue.h
+        src/algorithm/DijkstraResolver.cpp
+        src/algorithm/DijkstraResolver.h
+        src/utils/MaxValue.hpp
 )
 target_link_libraries(librouter stduuid)
 

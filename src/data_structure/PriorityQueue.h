@@ -16,6 +16,7 @@ public:
     void dequeue();
     T pop();
     T top();
+    bool isEmpty() const;
 
     uint16_t peek();
 

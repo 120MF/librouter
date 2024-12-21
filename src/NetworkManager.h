@@ -20,7 +20,7 @@ private:
 
     static NetworkManager *_instance;
 
-    Graph<Router*, RouterHashCompute> graph;
+    Graph<Router*, uint16_t, RouterHashCompute> graph;
 
 public:
     void printGraph();

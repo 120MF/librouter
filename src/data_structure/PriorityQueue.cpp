@@ -11,6 +11,7 @@ void PriorityQueue<T>::enqueue(T value, int priority) {
 
 template<typename T>
 void PriorityQueue<T>::dequeue() {
+    if (size < 0) return;
     const uint16_t index = peek();
 
     for (int i = index; i < size; ++i) {
@@ -21,6 +22,7 @@ void PriorityQueue<T>::dequeue() {
 
 template<typename T>
 T PriorityQueue<T>::pop() {
+    if (size <= 0) throw std::invalid_argument("no element in the queue");
     const uint16_t index = peek();
     T tmp = array[index].value;
     for (int i = index; i < size; ++i) {
@@ -32,7 +34,13 @@ T PriorityQueue<T>::pop() {
 
 template<typename T>
 T PriorityQueue<T>::top() {
+    if (size < 0) throw std::invalid_argument("no element in the queue");
     return array[peek()].value;
+}
+
+template<typename T>
+bool PriorityQueue<T>::isEmpty() const {
+    return size < 0;
 }
 
 template<typename T>
@@ -51,3 +59,4 @@ uint16_t PriorityQueue<T>::peek() {
 }
 
 template class PriorityQueue<Router*>;
+template class PriorityQueue<int>;

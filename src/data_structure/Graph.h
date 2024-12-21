@@ -1,11 +1,9 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <memory>
-
 #include "Hashmap.h"
 
-template<typename T, typename HashFunc>
+template<typename T, typename WEIGHT_T, typename HashFunc>
 class Graph {
 public:
 
@@ -13,14 +11,14 @@ public:
 
     void removeNode(T node);
 
-    void addEdge(T u, T v, int weight);
+    void addEdge(T u, T v, WEIGHT_T weight);
 
     void removeEdge(T u, T v);
 
     void printGraph();
 
 private:
-    Hashmap<T, Hashmap<T, int, HashFunc>*, HashFunc> adjList;
+    Hashmap<T, Hashmap<T, WEIGHT_T, HashFunc>*, HashFunc> adjList;
 };
 
 
