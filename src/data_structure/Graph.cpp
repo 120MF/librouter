@@ -1,6 +1,7 @@
 #include "Graph.h"
 
 #include <iostream>
+#include <utility>
 
 #include "Router.h"
 
@@ -39,6 +40,12 @@ void Graph<T, WEIGHT_T, HashFunc>::printGraph() {
         });
         std::cout << std::endl;
     });
+}
+
+template<typename T, typename WEIGHT_T, typename HashFunc>
+void Graph<T, WEIGHT_T, HashFunc>::visitAllEdge(T u, std::function<void(T &, WEIGHT_T &)> func) {
+    auto edges = adjList.get(u);
+    edges->visitAll(std::move(func));
 }
 
 template class Graph<Router*, uint16_t, RouterHashCompute>;

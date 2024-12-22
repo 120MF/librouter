@@ -13,15 +13,14 @@ struct node {
 template <typename T, typename WEIGHT_T, typename T_HASHFUNC>
 class DijkstraResolver {
 public:
-    DijkstraResolver(T origin, Graph<T, WEIGHT_T, T_HASHFUNC>* graph);
+    explicit DijkstraResolver(T origin);
 
 
-    PriorityQueue<node<T,WEIGHT_T>>* resolve();
+    PriorityQueue<node<T,WEIGHT_T>>* resolve(Graph<T,WEIGHT_T,T_HASHFUNC>* graph);
 private:
     T origin;
     bool visited[MaxValue<WEIGHT_T>::value] = {};
     WEIGHT_T dis[MaxValue<WEIGHT_T>::value] = {};
-    Graph<T, WEIGHT_T, T_HASHFUNC>* graph;
 
     PriorityQueue<node<T,WEIGHT_T>> queue;
 };
