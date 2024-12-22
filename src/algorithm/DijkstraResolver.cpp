@@ -3,12 +3,12 @@
 #include <cstring>
 #include <iostream>
 
-template <typename T, typename WEIGHT_T, typename T_HASHFUNC>
-DijkstraResolver<T, WEIGHT_T, T_HASHFUNC>::DijkstraResolver(T origin): origin(origin){
+template<typename T, typename WEIGHT_T>
+DijkstraResolver<T, WEIGHT_T>::DijkstraResolver(T origin): origin(origin) {
 }
 
-template <typename T, typename WEIGHT_T, typename T_HASHFUNC>
-PriorityQueue<node<T,WEIGHT_T>> * DijkstraResolver<T,WEIGHT_T,T_HASHFUNC>::resolve(Graph<T,WEIGHT_T,T_HASHFUNC>* graph) {
+template<typename T, typename WEIGHT_T>
+PriorityQueue<node<T, WEIGHT_T> > *DijkstraResolver<T, WEIGHT_T>::resolve(Graph<T, WEIGHT_T> *graph) {
     memset(dis, MaxValue<WEIGHT_T>::value, sizeof(dis));
     memset(visited, 0, sizeof(visited));
     dis[origin] = 0;

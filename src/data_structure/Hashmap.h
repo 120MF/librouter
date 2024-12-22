@@ -3,15 +3,13 @@
 #include <cstdint>
 #include <functional>
 
-constexpr uint32_t MAX_HASH_SIZE = UINT16_MAX+1;
-constexpr uint32_t INIT_HASH_SIZE = UINT8_MAX+1;
+constexpr uint32_t MAX_HASH_SIZE = UINT16_MAX + 1;
+constexpr uint32_t INIT_HASH_SIZE = UINT8_MAX + 1;
 
 template<typename T>
-struct HashCompute {
-    uint32_t operator()(const T &key) const {
-        return std::hash<T>()(key);
-    }
-};
+uint32_t HashCompute(const T key) {
+    return std::hash<T>()(key);
+}
 
 template<typename Key, typename Value>
 struct Bucket {
@@ -22,10 +20,10 @@ struct Bucket {
     Value value;
 };
 
-template<typename Key, typename Value, typename Func = HashCompute<Key> >
+template<typename Key, typename Value>
 class Hashmap {
 public:
-    Hashmap();
+    explicit Hashmap(std::function<uint32_t(Key)> hashFunction = HashCompute<Key>);
 
     ~Hashmap();
 
@@ -39,11 +37,13 @@ public:
 
 private:
     Bucket<Key, Value> **Hashtable;
+
     void resize();
+
     float load_factor = 0.75;
     uint32_t used_buckets = 0;
     uint32_t size = INIT_HASH_SIZE;
-    Func hashCompute;
+    std::function<uint32_t(Key)> hashCompute;
 };
 
 

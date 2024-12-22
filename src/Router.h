@@ -10,9 +10,12 @@
 class Router {
 public:
   Router();
-  explicit Router(const std::string& name);
+
+  explicit Router(const std::string &name);
+
   explicit Router(uint16_t delay);
-  Router(const std::string& name, uint16_t delay);
+
+  Router(const std::string &name, uint16_t delay);
 
   friend bool operator==(const Router &lhs, const Router &rhs) {
     return lhs._uuid == rhs._uuid;
@@ -34,13 +37,16 @@ private:
 public:
   [[nodiscard]] const std::string &get_uuid() const {
     return _uuid;
-  }[[nodiscard]] const std::string &get_name() const {
+  }
+
+  [[nodiscard]] const std::string &get_name() const {
     return _name;
   }
 };
 
-struct RouterHashCompute {
-  uint32_t operator()(const Router* router) const {
+template<>
+struct std::hash<Router> {
+  std::size_t operator()(const Router *router) const noexcept {
     return std::hash<std::string>()(router->get_uuid());
   }
 };

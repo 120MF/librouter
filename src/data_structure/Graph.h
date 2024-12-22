@@ -3,10 +3,13 @@
 
 #include "Hashmap.h"
 
-template<typename T, typename WEIGHT_T, typename HashFunc>
+class Router;
+
+uint32_t RouterHashCompute(const Router *router);
+
+template<typename T, typename WEIGHT_T>
 class Graph {
 public:
-
     void addNode(T node);
 
     void removeNode(T node);
@@ -17,10 +20,10 @@ public:
 
     void printGraph();
 
-    void visitAllEdge(T u,std::function<void(T &, WEIGHT_T & )> func);
+    void visitAllEdge(T u, std::function<void(T &, WEIGHT_T &)> func);
 
 private:
-    Hashmap<T, Hashmap<T, WEIGHT_T, HashFunc>*, HashFunc> adjList;
+    Hashmap<T, Hashmap<T, WEIGHT_T> *> adjList = Hashmap<T, Hashmap<T, WEIGHT_T> *>();
 };
 
 

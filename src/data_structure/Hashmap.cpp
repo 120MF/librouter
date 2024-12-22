@@ -3,27 +3,28 @@
 #include <stdexcept>
 #include <cstring>
 #include <memory>
+#include <utility>
 
 #include "Router.h"
 
-template<typename Key, typename Value, typename Func>
-Hashmap<Key, Value, Func>::Hashmap() {
+template<typename Key, typename Value>
+Hashmap<Key, Value>::Hashmap(std::function<uint32_t(Key)> hashFunction): hashCompute(hashFunction) {
     Hashtable = new Bucket<Key, Value> *[size];
     for (uint32_t i = 0; i < size; i++) {
         Hashtable[i] = nullptr;
     }
 }
 
-template<typename Key, typename Value, typename Func>
-Hashmap<Key, Value, Func>::~Hashmap() {
+template<typename Key, typename Value>
+Hashmap<Key, Value>::~Hashmap() {
     for (uint32_t i = 0; i < size; i++) {
         delete Hashtable[i];
     }
     delete[] Hashtable;
 }
 
-template<typename Key, typename Value, typename Func>
-bool Hashmap<Key, Value, Func>::set(const Key &key, const Value &value) {
+template<typename Key, typename Value>
+bool Hashmap<Key, Value>::set(const Key &key, const Value &value) {
     if (used_buckets + 1 > size * load_factor) resize();
     const uint32_t val = hashCompute(key);
     uint32_t start = val % size;
@@ -46,10 +47,10 @@ bool Hashmap<Key, Value, Func>::set(const Key &key, const Value &value) {
     return true;
 }
 
-template<typename Key, typename Value, typename Func>
-void Hashmap<Key, Value, Func>::resize() {
+template<typename Key, typename Value>
+void Hashmap<Key, Value>::resize() {
     uint32_t new_size = size * 2;
-    Bucket<Key, Value> **new_table = new Bucket<Key,Value> *[new_size];
+    Bucket<Key, Value> **new_table = new Bucket<Key, Value> *[new_size];
     for (uint32_t i = 0; i < new_size; i++) {
         new_table[i] = nullptr;
     }
@@ -76,8 +77,8 @@ void Hashmap<Key, Value, Func>::resize() {
 }
 
 
-template<typename Key, typename Value, typename Func>
-Value &Hashmap<Key, Value, Func>::get(const Key &key) {
+template<typename Key, typename Value>
+Value &Hashmap<Key, Value>::get(const Key &key) {
     if (used_buckets == 0) throw std::invalid_argument("Key not found.");
 
     const uint32_t val = hashCompute(key);
@@ -92,8 +93,8 @@ Value &Hashmap<Key, Value, Func>::get(const Key &key) {
     throw std::invalid_argument("Key not found.");
 }
 
-template<typename Key, typename Value, typename Func>
-Value Hashmap<Key, Value, Func>::erase(const Key &key) {
+template<typename Key, typename Value>
+Value Hashmap<Key, Value>::erase(const Key &key) {
     if (used_buckets == 0) throw std::invalid_argument("Key not found.");
     const uint32_t val = hashCompute(key);
     uint32_t start = val % size;
@@ -110,8 +111,8 @@ Value Hashmap<Key, Value, Func>::erase(const Key &key) {
     throw std::invalid_argument("Key not found.");
 }
 
-template<typename Key, typename Value, typename Func>
-void Hashmap<Key, Value, Func>::visitAll(std::function<void(Key &, Value &)> func) {
+template<typename Key, typename Value>
+void Hashmap<Key, Value>::visitAll(std::function<void(Key &, Value &)> func) {
     if (used_buckets == 0) return;
     uint32_t visited = 0;
     for (uint32_t t = 0; t < size && visited < used_buckets; t++) {
@@ -121,5 +122,6 @@ void Hashmap<Key, Value, Func>::visitAll(std::function<void(Key &, Value &)> fun
         }
     }
 }
-template class Hashmap<Router*, uint16_t, RouterHashCompute>;
-template class Hashmap<Router*, Hashmap<Router*, uint16_t, RouterHashCompute>*, RouterHashCompute>;
+
+template class Hashmap<Router *, uint16_t>;
+template class Hashmap<Router *, Hashmap<Router *, uint16_t> *>;
