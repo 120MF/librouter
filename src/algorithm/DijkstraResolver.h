@@ -22,6 +22,7 @@ private:
     Hashmap<T, bool> visited;
     Hashmap<T, WEIGHT_T> dis;
 
+
     PriorityQueue<T> queue;
 };
 

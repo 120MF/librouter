@@ -32,6 +32,8 @@ add_library(librouter
         src/algorithm/DijkstraResolver.cpp
         src/algorithm/DijkstraResolver.h
         src/utils/MaxValue.hpp
+        src/data_structure/Stack.cpp
+        src/data_structure/Stack.h
 )
 target_link_libraries(librouter stduuid)
 

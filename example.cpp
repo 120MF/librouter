@@ -1,6 +1,7 @@
 #include "NetworkManager.h"
 #include "Router.h"
 #include "data_structure/PriorityQueue.h"
+#include "data_structure/Stack.h"
 
 int main() {
   auto nm = NetworkManager::getInstance();
