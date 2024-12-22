@@ -9,7 +9,10 @@ void NetworkManager::addRouter(Router *router) {
     graph.addNode(router);
 }
 
-void NetworkManager::connect(Router *router1, Router *router2, uint16_t weight) {
+void NetworkManager::connect(Router *router1, Router *router2, uint16_t weight = 0) {
+    if (weight == 0) {
+        weight = router1->delay() + router2->delay();
+    }
     graph.addEdge(router1, router2, weight);
 }
 

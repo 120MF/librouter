@@ -28,6 +28,8 @@ private:
   std::string _uuid;
   std::string _name;
   uint16_t _delay{};
+
+private:
   DijkstraResolver<Router *, uint16_t> _dijkstra_resolver = DijkstraResolver<Router *, uint16_t>(this);
 
 public:
@@ -37,6 +39,10 @@ public:
 
   [[nodiscard]] const std::string &get_name() const {
     return _name;
+  }
+
+  [[nodiscard]] uint16_t delay() const {
+    return _delay;
   }
 
 public:
