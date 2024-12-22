@@ -17,13 +17,19 @@ int main() {
   nm->connect(router1, router2, 3);
   nm->connect(router2, router3, 4);
   nm->connect(router1, router3, 2);
-  nm->connect(router1, router4, 7);
+  nm->connect(router1, router4, 10);
   nm->connect(router3, router4, 1);
 
   nm->printGraph();
 
   std::cout << "------------" << std::endl;
   router1->resolve();
+  Stack<Router *> stack = router1->getShortestPath(router4);
+
+  while (!stack.isEmpty()) {
+    std::cout << stack.pop() << std::endl;
+  }
+
 
   delete router1, router2, router3, router4;
 

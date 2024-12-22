@@ -22,6 +22,8 @@ public:
 
   void resolve();
 
+  Stack<Router *> getShortestPath(Router *target);
+
 private:
   std::string _uuid;
   std::string _name;

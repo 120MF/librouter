@@ -41,8 +41,7 @@ bool Hashmap<Key, Value>::set(const Key key, const Value value) {
     }
     if (start == end) return false;
 
-    if (has_key) delete Hashtable[start];
-    else ++used_buckets;
+    if (!has_key) ++used_buckets;
     Hashtable[start] = new Bucket<Key, Value>(key, value);
     return true;
 }
@@ -125,4 +124,5 @@ void Hashmap<Key, Value>::visitAll(std::function<void(Key &, Value &)> func) {
 
 template class Hashmap<Router *, uint16_t>;
 template class Hashmap<Router *, bool>;
+template class Hashmap<Router *, Router *>;
 template class Hashmap<Router *, Hashmap<Router *, uint16_t> *>;

@@ -42,3 +42,12 @@ void Router::resolve() {
     const auto graph = nm->get_graph();
     _dijkstra_resolver.resolve(graph);
 }
+
+Stack<Router *> Router::getShortestPath(Router *target) {
+    if (target == this) {
+        Stack<Router *> s;
+        s.push(target);
+        return s;
+    }
+    return _dijkstra_resolver.getShortestPath(target);
+}
