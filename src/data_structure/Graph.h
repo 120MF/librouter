@@ -20,7 +20,9 @@ public:
 
     void printGraph();
 
-    void visitAllEdge(T u, std::function<void(T &, WEIGHT_T &)> func);
+    void visitAllNode(std::function<void(T &)> func);
+
+    void visitAllEdge(T &u, std::function<void(T &, WEIGHT_T &)> func);
 
 private:
     Hashmap<T, Hashmap<T, WEIGHT_T> *> adjList = Hashmap<T, Hashmap<T, WEIGHT_T> *>();

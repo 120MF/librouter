@@ -24,7 +24,7 @@ Hashmap<Key, Value>::~Hashmap() {
 }
 
 template<typename Key, typename Value>
-bool Hashmap<Key, Value>::set(const Key &key, const Value &value) {
+bool Hashmap<Key, Value>::set(const Key key, const Value value) {
     if (used_buckets + 1 > size * load_factor) resize();
     const uint32_t val = hashCompute(key);
     uint32_t start = val % size;
@@ -124,4 +124,5 @@ void Hashmap<Key, Value>::visitAll(std::function<void(Key &, Value &)> func) {
 }
 
 template class Hashmap<Router *, uint16_t>;
+template class Hashmap<Router *, bool>;
 template class Hashmap<Router *, Hashmap<Router *, uint16_t> *>;

@@ -22,7 +22,7 @@ void PriorityQueue<T>::dequeue() {
 
 template<typename T>
 T PriorityQueue<T>::pop() {
-    if (size <= 0) throw std::invalid_argument("no element in the queue");
+    if (size < 0) throw std::invalid_argument("no element in the queue");
     const uint16_t index = peek();
     T tmp = array[index].value;
     for (int i = index; i < size; ++i) {
@@ -58,5 +58,5 @@ uint16_t PriorityQueue<T>::peek() {
     return index;
 }
 
-template class PriorityQueue<Router*>;
+template class PriorityQueue<Router *>;
 template class PriorityQueue<int>;

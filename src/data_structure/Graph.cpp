@@ -43,7 +43,14 @@ void Graph<T, WEIGHT_T>::printGraph() {
 }
 
 template<typename T, typename WEIGHT_T>
-void Graph<T, WEIGHT_T>::visitAllEdge(T u, std::function<void(T &, WEIGHT_T &)> func) {
+void Graph<T, WEIGHT_T>::visitAllNode(std::function<void(T &)> func) {
+    adjList.visitAll([func](T &u, auto) {
+        func(u);
+    });
+}
+
+template<typename T, typename WEIGHT_T>
+void Graph<T, WEIGHT_T>::visitAllEdge(T &u, std::function<void(T &, WEIGHT_T &)> func) {
     auto edges = adjList.get(u);
     edges->visitAll(std::move(func));
 }

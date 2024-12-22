@@ -15,6 +15,12 @@ public:
 
     static NetworkManager *getInstance();
 
+    void addRouter(Router *router);
+
+    void connect(Router *router1, Router *router2, uint16_t weight);
+
+    Graph<Router *, uint16_t> *get_graph() { return &graph; }
+
 private:
     NetworkManager();
 

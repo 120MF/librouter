@@ -5,7 +5,10 @@
 #include <iostream>
 #include <memory>
 
-#include "data_structure/PriorityQueue.h"
+#include "NetworkManager.h"
+#include "algorithm/DijkstraResolver.h"
+
+class NetworkManager;
 
 class Router {
 public:
@@ -17,6 +20,24 @@ public:
 
   Router(const std::string &name, uint16_t delay);
 
+  void resolve();
+
+private:
+  std::string _uuid;
+  std::string _name;
+  uint16_t _delay{};
+  DijkstraResolver<Router *, uint16_t> _dijkstra_resolver = DijkstraResolver<Router *, uint16_t>(this);
+
+public:
+  [[nodiscard]] const std::string &get_uuid() const {
+    return _uuid;
+  }
+
+  [[nodiscard]] const std::string &get_name() const {
+    return _name;
+  }
+
+public:
   friend bool operator==(const Router &lhs, const Router &rhs) {
     return lhs._uuid == rhs._uuid;
   }
@@ -27,20 +48,6 @@ public:
 
   friend std::ostream &operator<<(std::ostream &os, const Router &obj) {
     return os << obj._name;
-  }
-
-private:
-  std::string _uuid;
-  std::string _name;
-  uint16_t _delay{};
-
-public:
-  [[nodiscard]] const std::string &get_uuid() const {
-    return _uuid;
-  }
-
-  [[nodiscard]] const std::string &get_name() const {
-    return _name;
   }
 };
 

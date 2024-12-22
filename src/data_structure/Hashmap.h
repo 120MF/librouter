@@ -27,7 +27,7 @@ public:
 
     ~Hashmap();
 
-    bool set(const Key &key, const Value &value);
+    bool set(Key key, Value value);
 
     Value &get(const Key &key);
 

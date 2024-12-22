@@ -21,7 +21,7 @@ Router::Router(uint16_t delay) {
     std::cout << "Unnamed router initiliazed" << std::endl;
 }
 
-Router::Router(const std::string& name) {
+Router::Router(const std::string &name) {
     uuids::uuid const id = uuids::uuid_system_generator{}();
     this->_uuid = uuids::to_string(id);
     this->_name = name;
@@ -35,4 +35,10 @@ Router::Router(const std::string &name, uint16_t delay) {
     this->_name = name;
     _delay = delay;
     std::cout << "router " << name << " initiliazed" << std::endl;
+}
+
+void Router::resolve() {
+    const auto nm = NetworkManager::getInstance();
+    const auto graph = nm->get_graph();
+    _dijkstra_resolver.resolve(graph);
 }
