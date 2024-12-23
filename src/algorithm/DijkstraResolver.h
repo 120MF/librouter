@@ -1,5 +1,6 @@
 #ifndef DIJKSTRARESOLVER_H
 #define DIJKSTRARESOLVER_H
+
 #include "data_structure/Graph.h"
 #include "data_structure/Stack.h"
 

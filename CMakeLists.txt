@@ -16,8 +16,10 @@ set(UUID_USING_CXX20_SPAN ON)
 set(UUID_ENABLE_INSTALL OFF)
 add_subdirectory(3rdparty/stduuid)
 include_directories(3rdparty/stduuid/include)
-include_directories(src)
 
+include_directories(3rdparty/bs_thread_pool/include)
+
+include_directories(src)
 
 add_library(librouter
         src/Router.cpp src/Router.h

@@ -7,6 +7,7 @@ NetworkManager *NetworkManager::getInstance() {
 
 void NetworkManager::addRouter(Router *router) {
     graph.addNode(router);
+    ++router_count;
 }
 
 void NetworkManager::connect(Router *router1, Router *router2, uint16_t weight = 0) {
@@ -23,4 +24,17 @@ NetworkManager::NetworkManager() = default;
 
 void NetworkManager::printGraph() {
     graph.printGraph();
+}
+
+
+void NetworkManager::resolveTaskTimer() {
+    while (!timer_stop) {
+        graph.visitAllNode([](Router* router) {
+           //get current timestamp
+        });
+    }
+}
+
+void NetworkManager::stopTimer() {
+    timer_stop.store(true,std::memory_order_release);
 }

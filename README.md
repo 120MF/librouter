@@ -23,12 +23,13 @@ ninja
 ## 待实现
 
 - [ ] Dijkstra 多线程任务队列
-- [ ] data_structure线程安全
+- [x] ConcurrentHashmap
 
 ## 待完善
 
 - [ ] PriorityQueue的resize功能
 - [ ] data_structure的拷贝函数
+- [ ] HashCompute
 - [ ] doxygen文档
 
 ## Credit

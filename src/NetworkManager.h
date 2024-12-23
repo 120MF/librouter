@@ -2,6 +2,7 @@
 #define NETWORKMANAGER_H
 #include "data_structure/Graph.h"
 #include "Router.h"
+#include "BS_thread_pool.hpp"
 
 class Router;
 
@@ -21,12 +22,22 @@ public:
 
     Graph<Router *, uint16_t> *get_graph() { return &graph; }
 
+    void resolveTaskTimer();
+
+    void stopTimer();
+
 private:
     NetworkManager();
 
     static NetworkManager *_instance;
 
     Graph<Router *, uint16_t> graph;
+
+    std::atomic<bool> timer_stop = false;
+
+    std::atomic<uint16_t> router_count = 0;
+
+    BS::thread_pool<> pool;
 
 public:
     void printGraph();

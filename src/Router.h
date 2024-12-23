@@ -24,6 +24,8 @@ public:
 
   Stack<Router *> getShortestPath(Router *target);
 
+  std::chrono::milliseconds last_update_timestamp;
+
 private:
   std::string _uuid;
   std::string _name;
