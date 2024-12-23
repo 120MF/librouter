@@ -1,16 +1,21 @@
 #ifndef HASHCOMPUTE_HPP
 #define HASHCOMPUTE_HPP
+#include <cstdint>
 #include <string>
 
 class Router;
 
-template<typename T>
-uint32_t HashCompute(const T key) {
-    return std::hash<T>()(key);
-}
+template <typename T>
+uint32_t HashCompute(T);
 
-// move the implementation to Router.cpp, avoiding compile error
-template<>
+template <>
 uint32_t HashCompute(Router key);
+
+template <>
+uint32_t HashCompute(Router* key);
+
+template uint32_t HashCompute<Router>(Router);
+
+template uint32_t HashCompute<Router*>(Router*);
 
 #endif //HASHCOMPUTE_HPP

@@ -6,10 +6,9 @@
 
 class Router;
 
-uint32_t RouterHashCompute(const Router *router);
-
-template<typename T, typename WEIGHT_T>
-class Graph {
+template <typename T, typename WEIGHT_T>
+class Graph
+{
 public:
     void addNode(T node);
 
@@ -21,12 +20,13 @@ public:
 
     void printGraph();
 
-    void visitAllNode(std::function<void(T &)> func);
+    void visitAllNode(std::function<void(T&)> func);
 
-    void visitAllEdge(T &u, std::function<void(T &, WEIGHT_T &)> func);
+    void visitAllEdge(T& u, std::function<void(T, WEIGHT_T)> func);
 
 private:
-    ConcurrentHashmap<T, ConcurrentHashmap<T, WEIGHT_T> *> adjList = ConcurrentHashmap<T, ConcurrentHashmap<T, WEIGHT_T> *>();
+    ConcurrentHashmap<T, ConcurrentHashmap<T, WEIGHT_T>*> adjList = ConcurrentHashmap<
+        T, ConcurrentHashmap<T, WEIGHT_T>*>();
 };
 
 

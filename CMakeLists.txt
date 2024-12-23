@@ -25,6 +25,8 @@ add_library(librouter
         src/NetworkManager.h
         src/data_structure/Graph.cpp
         src/data_structure/Graph.h
+        src/utils/HashCompute.cpp
+        src/utils/HashCompute.hpp
         src/data_structure/Hashmap.cpp
         src/data_structure/Hashmap.h
         src/data_structure/ConcurrentHashmap.cpp
@@ -38,8 +40,8 @@ add_library(librouter
 )
 target_link_libraries(librouter stduuid)
 
-if(${GENERATE_EXAMPLE_PROGRAM})
-add_executable(example example.cpp)
-target_include_directories(example PRIVATE src/)
-target_link_libraries(example librouter)
+if (${GENERATE_EXAMPLE_PROGRAM})
+    add_executable(example example.cpp)
+    target_include_directories(example PRIVATE src/)
+    target_link_libraries(example librouter)
 endif ()
