@@ -30,7 +30,7 @@ public:
 
     bool set(Key key, Value value);
 
-    Value &get(const Key &key);
+    Value get(const Key &key);
 
     void erase(const Key &key);
 

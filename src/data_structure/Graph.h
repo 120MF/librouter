@@ -1,6 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include "ConcurrentHashmap.h"
 #include "Hashmap.h"
 
 class Router;
@@ -25,7 +26,7 @@ public:
     void visitAllEdge(T &u, std::function<void(T &, WEIGHT_T &)> func);
 
 private:
-    Hashmap<T, Hashmap<T, WEIGHT_T> *> adjList = Hashmap<T, Hashmap<T, WEIGHT_T> *>();
+    ConcurrentHashmap<T, ConcurrentHashmap<T, WEIGHT_T> *> adjList = ConcurrentHashmap<T, ConcurrentHashmap<T, WEIGHT_T> *>();
 };
 
 

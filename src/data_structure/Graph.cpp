@@ -7,13 +7,13 @@
 
 template<typename T, typename WEIGHT_T>
 void Graph<T, WEIGHT_T>::addNode(T node) {
-    adjList.set(node, new Hashmap<T, WEIGHT_T>);
+    adjList.set(node, new ConcurrentHashmap<T, WEIGHT_T>);
 }
 
 template<typename T, typename WEIGHT_T>
 void Graph<T, WEIGHT_T>::removeNode(T node) {
     adjList.erase(node);
-    auto func = [node](T &, Hashmap<T, WEIGHT_T> *edges) {
+    auto func = [node](T &, ConcurrentHashmap<T, WEIGHT_T> *edges) {
         edges->erase(node);
     };
     adjList.visitAll(func);
@@ -33,7 +33,7 @@ void Graph<T, WEIGHT_T>::removeEdge(T u, T v) {
 
 template<typename T, typename WEIGHT_T>
 void Graph<T, WEIGHT_T>::printGraph() {
-    adjList.visitAll([](T &node, Hashmap<T, WEIGHT_T> *edge) {
+    adjList.visitAll([](T &node, ConcurrentHashmap<T, WEIGHT_T> *edge) {
         std::cout << node << std::endl;
         edge->visitAll([](T &key, WEIGHT_T &value) {
             std::cout << key << " " << value << std::endl;

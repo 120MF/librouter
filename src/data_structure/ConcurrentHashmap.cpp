@@ -46,7 +46,7 @@ bool ConcurrentHashmap<Key, Value>::set(Key key, Value value) {
 }
 
 template<typename Key, typename Value>
-Value & ConcurrentHashmap<Key, Value>::get(const Key &key) {
+Value ConcurrentHashmap<Key, Value>::get(const Key &key) {
     std::shared_lock<std::shared_mutex> lock(resize_mutex);
 
     if (used_buckets.load(std::memory_order_relaxed) == 0) throw std::invalid_argument("Can't find key on an empty map.");
@@ -124,3 +124,6 @@ void ConcurrentHashmap<Key, Value>::resize() {
     Hashtable = new_table;
     size = new_size;
 }
+
+template class ConcurrentHashmap<Router *, uint16_t>;
+template class ConcurrentHashmap<Router *, ConcurrentHashmap<Router *, uint16_t> *>;
