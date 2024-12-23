@@ -59,6 +59,14 @@ public:
   }
 };
 
+template<>
+struct std::hash<Router> {
+  std::size_t operator()(const Router *router) const noexcept {
+    return std::hash<std::string>()(router->get_uuid());
+  }
+};
+
+
 inline std::ostream &operator<<(std::ostream &os, const Router *router) {
   if (router) {
     os << *router;

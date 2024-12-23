@@ -1,14 +1,15 @@
-//
-// Created by mf on 12/23/24.
-//
-
 #ifndef CONCURRENTHASHMAP_H
 #define CONCURRENTHASHMAP_H
 #include <atomic>
 #include <functional>
 #include <shared_mutex>
-#include <utils/HashCompute.hpp>
 #include <utils/MaxValue.hpp>
+// #include <utils/HashCompute.hpp>
+
+template<typename T>
+uint32_t ConcurrentHashCompute(const T key) {
+    return std::hash<T>()(key);
+}
 
 template <typename Key, typename Value>
 struct ConcurrentBucket
@@ -27,7 +28,7 @@ template <typename Key, typename Value>
 class ConcurrentHashmap
 {
 public:
-    explicit ConcurrentHashmap(std::function<uint32_t(Key)> hashFunction = HashCompute<Key>);
+    explicit ConcurrentHashmap(std::function<uint32_t(Key)> hashFunction = ConcurrentHashCompute<Key>);
 
     ~ConcurrentHashmap();
 

@@ -1,6 +1,6 @@
 #include "NetworkManager.h"
 #include "Router.h"
-#include "data_structure/PriorityQueue.h"
+#include "utils/HashCompute.hpp"
 #include "data_structure/Stack.h"
 
 int main() {

@@ -1,5 +1,5 @@
 #include "ConcurrentHashmap.h"
-
+#include "Router.h"
 #include <mutex>
 #include <stdexcept>
 
@@ -28,7 +28,7 @@ bool ConcurrentHashmap<Key, Value>::set(Key key, Value value)
 {
     uint32_t used_buckets_ = used_buckets.load(std::memory_order_acquire);
     if (used_buckets_ + 1 > size * load_factor) resize();
-    const uint32_t val = hashCompute(key);
+    const uint32_t val = ConcurrentHashCompute(key);
     uint32_t start = val % size;
     const uint32_t end = (start > 0) ? ((start - 1) % size) : size - 1;
 
@@ -60,7 +60,7 @@ Value ConcurrentHashmap<Key, Value>::get(const Key& key)
         throw std::invalid_argument(
             "Can't find key on an empty map.");
 
-    const uint32_t val = hashCompute(key);
+    const uint32_t val = ConcurrentHashCompute(key);
     uint32_t start = val % size;
     const uint32_t end = (start > 0) ? ((start - 1) % size) : size - 1;
     while (start != end)
@@ -80,7 +80,7 @@ void ConcurrentHashmap<Key, Value>::erase(const Key& key)
     uint32_t used_buckets_ = used_buckets.load(std::memory_order_acquire);
     if (used_buckets_ == 0) throw std::invalid_argument("Can't erase key on an empty map.");
 
-    const uint32_t val = hashCompute(key);
+    const uint32_t val = ConcurrentHashCompute(key);
     uint32_t start = val % size;
     const uint32_t end = (start > 0) ? ((start - 1) % size) : size - 1;
     while (start != end)
@@ -129,7 +129,7 @@ void ConcurrentHashmap<Key, Value>::resize()
     {
         if (Hashtable[i] != nullptr)
         {
-            const uint32_t val = hashCompute(Hashtable[i]->key.load(std::memory_order_relaxed));
+            const uint32_t val = ConcurrentHashCompute(Hashtable[i]->key.load(std::memory_order_relaxed));
             uint32_t start = val % new_size;
             const uint32_t end = (start > 0) ? ((start - 1) % new_size) : new_size - 1;
 

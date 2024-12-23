@@ -25,8 +25,6 @@ add_library(librouter
         src/NetworkManager.h
         src/data_structure/Graph.cpp
         src/data_structure/Graph.h
-        src/utils/HashCompute.cpp
-        src/utils/HashCompute.hpp
         src/data_structure/Hashmap.cpp
         src/data_structure/Hashmap.h
         src/data_structure/ConcurrentHashmap.cpp
@@ -37,6 +35,7 @@ add_library(librouter
         src/algorithm/DijkstraResolver.h
         src/data_structure/Stack.cpp
         src/data_structure/Stack.h
+        src/utils/HashCompute.hpp
 )
 target_link_libraries(librouter stduuid)
 

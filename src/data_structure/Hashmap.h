@@ -2,8 +2,13 @@
 #define HASHMAP_H
 #include <cstdint>
 #include <functional>
-#include "utils/HashCompute.hpp"
 #include "utils/MaxValue.hpp"
+// #include "utils/HashCompute.hpp"
+
+template<typename T>
+uint32_t HashCompute(const T key) {
+    return std::hash<T>()(key);
+}
 
 template<typename Key, typename Value>
 struct Bucket {
