@@ -1,5 +1,7 @@
 #include "Router.h"
 #include "uuid.h"
+#include "utils/HashCompute.hpp"
+#include "NetworkManager.h"
 
 std::random_device rd;
 std::mt19937 gen(rd());
@@ -50,4 +52,9 @@ Stack<Router *> Router::getShortestPath(Router *target) {
         return s;
     }
     return _dijkstra_resolver.getShortestPath(target);
+}
+
+template<>
+uint32_t HashCompute(const Router key) {
+    return std::hash<std::string>()(key.get_uuid());
 }

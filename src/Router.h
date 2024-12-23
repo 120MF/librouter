@@ -5,7 +5,7 @@
 #include <iostream>
 #include <memory>
 
-#include "NetworkManager.h"
+
 #include "algorithm/DijkstraResolver.h"
 
 class NetworkManager;
@@ -56,13 +56,6 @@ public:
 
   friend std::ostream &operator<<(std::ostream &os, const Router &obj) {
     return os << obj._name;
-  }
-};
-
-template<>
-struct std::hash<Router> {
-  std::size_t operator()(const Router *router) const noexcept {
-    return std::hash<std::string>()(router->get_uuid());
   }
 };
 

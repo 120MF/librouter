@@ -41,7 +41,8 @@ bool Hashmap<Key, Value>::set(const Key key, const Value value) {
     }
     if (start == end) return false;
 
-    if (!has_key) ++used_buckets;
+    if (has_key) delete Hashtable[start];
+    else ++used_buckets;
     Hashtable[start] = new Bucket<Key, Value>(key, value);
     return true;
 }
@@ -78,7 +79,7 @@ void Hashmap<Key, Value>::resize() {
 
 template<typename Key, typename Value>
 Value &Hashmap<Key, Value>::get(const Key &key) {
-    if (used_buckets == 0) throw std::invalid_argument("Key not found.");
+    if (used_buckets == 0) throw std::invalid_argument("Can't find key on an empty map.");
 
     const uint32_t val = hashCompute(key);
     uint32_t start = val % size;
@@ -93,17 +94,17 @@ Value &Hashmap<Key, Value>::get(const Key &key) {
 }
 
 template<typename Key, typename Value>
-Value Hashmap<Key, Value>::erase(const Key &key) {
-    if (used_buckets == 0) throw std::invalid_argument("Key not found.");
+void Hashmap<Key, Value>::erase(const Key &key) {
+    if (used_buckets == 0) throw std::invalid_argument("Can't erase key on an empty map.");
     const uint32_t val = hashCompute(key);
     uint32_t start = val % size;
     const uint32_t end = (start > 0) ? ((start - 1) % size) : size - 1;
     while (start != end) {
         if (Hashtable[start] != nullptr && Hashtable[start]->key == key) {
             Value value = Hashtable[start]->value;
+            delete Hashtable[start];
             Hashtable[start] = nullptr;
             --used_buckets;
-            return value;
         }
         start = (start + 1) % size;
     }

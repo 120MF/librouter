@@ -27,11 +27,12 @@ add_library(librouter
         src/data_structure/Graph.h
         src/data_structure/Hashmap.cpp
         src/data_structure/Hashmap.h
+        src/data_structure/ConcurrentHashmap.cpp
+        src/data_structure/ConcurrentHashmap.h
         src/data_structure/PriorityQueue.cpp
         src/data_structure/PriorityQueue.h
         src/algorithm/DijkstraResolver.cpp
         src/algorithm/DijkstraResolver.h
-        src/utils/MaxValue.hpp
         src/data_structure/Stack.cpp
         src/data_structure/Stack.h
 )

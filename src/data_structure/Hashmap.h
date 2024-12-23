@@ -2,14 +2,8 @@
 #define HASHMAP_H
 #include <cstdint>
 #include <functional>
-
-constexpr uint32_t MAX_HASH_SIZE = UINT16_MAX + 1;
-constexpr uint32_t INIT_HASH_SIZE = UINT8_MAX + 1;
-
-template<typename T>
-uint32_t HashCompute(const T key) {
-    return std::hash<T>()(key);
-}
+#include "utils/HashCompute.hpp"
+#include "utils/MaxValue.hpp"
 
 template<typename Key, typename Value>
 struct Bucket {
@@ -31,7 +25,7 @@ public:
 
     Value &get(const Key &key);
 
-    Value erase(const Key &key);
+    void erase(const Key &key);
 
     void visitAll(std::function<void(Key &, Value &)> func);
 
@@ -42,7 +36,7 @@ private:
 
     float load_factor = 0.75;
     uint32_t used_buckets = 0;
-    uint32_t size = INIT_HASH_SIZE;
+    uint32_t size = MaxValue<uint8_t>::value;
     std::function<uint32_t(Key)> hashCompute;
 };
 
