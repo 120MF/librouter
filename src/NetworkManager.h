@@ -12,7 +12,7 @@ public:
 
     NetworkManager &operator=(const NetworkManager &obj) = delete;
 
-    ~NetworkManager() = default;
+    ~NetworkManager();
 
     static NetworkManager *getInstance();
 
@@ -36,6 +36,8 @@ private:
     std::atomic<bool> timer_stop = false;
 
     std::atomic<uint16_t> router_count = 0;
+
+    std::thread resolve_thread;
 
     BS::thread_pool<> pool;
 

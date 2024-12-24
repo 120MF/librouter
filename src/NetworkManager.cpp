@@ -19,8 +19,15 @@ void NetworkManager::connect(Router *router1, Router *router2, uint16_t weight =
 
 NetworkManager *NetworkManager::_instance = new NetworkManager;
 
+NetworkManager::NetworkManager() {
+    resolve_thread = std::thread(&NetworkManager::resolveTaskTimer, this);
+};
 
-NetworkManager::NetworkManager() = default;
+NetworkManager::~NetworkManager() {
+    stopTimer();
+    resolve_thread.join();
+}
+
 
 void NetworkManager::printGraph() {
     graph.printGraph();
@@ -29,10 +36,17 @@ void NetworkManager::printGraph() {
 
 void NetworkManager::resolveTaskTimer() {
     while (!timer_stop) {
-        graph.visitAllNode([](Router* router) {
-           //get current timestamp
+        if (router_count == 0) continue;
+        auto now = std::chrono::system_clock::now();
+        graph.visitAllNode([now, this](Router* router) {
+           auto duration = std::chrono::duration_cast<std::chrono::seconds>(now - router->last_update_timestamp);
+            if (duration.count() >= 2) {
+                router->last_update_timestamp = now;
+                router->have_updated = pool.submit_task([router](){router->resolve();});
+            }
         });
     }
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 void NetworkManager::stopTimer() {

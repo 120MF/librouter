@@ -1,6 +1,5 @@
 #include "NetworkManager.h"
 #include "Router.h"
-#include "utils/HashCompute.hpp"
 #include "data_structure/Stack.h"
 
 int main() {
@@ -23,7 +22,7 @@ int main() {
   nm->printGraph();
 
   std::cout << "------------" << std::endl;
-  router1->resolve();
+  std::this_thread::sleep_for(std::chrono::seconds(5));
   Stack<Router *> stack = router1->getShortestPath(router4);
 
   while (!stack.isEmpty()) {

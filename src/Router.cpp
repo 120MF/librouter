@@ -52,6 +52,7 @@ void Router::resolve()
 
 Stack<Router*> Router::getShortestPath(Router* target)
 {
+    have_updated.wait();
     if (target == this)
     {
         Stack<Router*> s;

@@ -2,6 +2,7 @@
 #define ROUTER_H
 
 #include <cstdint>
+#include <future>
 #include <iostream>
 #include <memory>
 
@@ -24,7 +25,8 @@ public:
 
   Stack<Router *> getShortestPath(Router *target);
 
-  std::chrono::milliseconds last_update_timestamp;
+  std::chrono::time_point<std::chrono::system_clock> last_update_timestamp;
+  std::future<void> have_updated;
 
 private:
   std::string _uuid;
