@@ -17,12 +17,17 @@ struct MaxValue<uint16_t> {
 
 template<>
 struct MaxValue<uint32_t> {
-    static constexpr int value = UINT32_MAX;
+    static constexpr uint32_t value = UINT32_MAX;
 };
 
 template<>
 struct MaxValue<unsigned long> {
-    static constexpr int value = UINT32_MAX;
+    static constexpr uint32_t value = UINT32_MAX;
+};
+
+template<>
+struct MaxValue<unsigned long long> {
+    static constexpr uint64_t value = UINT64_MAX;
 };
 
 template<>
