@@ -9,7 +9,7 @@ option(GENERATE_EXAMPLE_PROGRAM "Compile the example.cpp into an executable." ON
 
 # a quick fix, create a fork of stduuid to exterminate it.
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/3rdparty/stduuid/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/stduuid/cmake)
 ##
 set(UUID_SYSTEM_GENERATOR ON)
 set(UUID_USING_CXX20_SPAN ON)
