@@ -32,6 +32,7 @@ private:
   std::string _uuid;
   std::string _name;
   uint16_t _delay{};
+  uint32_t _hash;
 
 private:
   DijkstraResolver<Router *, uint16_t> _dijkstra_resolver = DijkstraResolver<Router *, uint16_t>(this);
@@ -47,6 +48,10 @@ public:
 
   [[nodiscard]] uint16_t delay() const {
     return _delay;
+  }
+
+  [[nodiscard]] uint32_t hash() const {
+    return _hash;
   }
 
 public:
@@ -66,7 +71,7 @@ public:
 template<>
 struct std::hash<Router> {
   std::size_t operator()(const Router *router) const noexcept {
-    return std::hash<std::string>()(router->get_uuid());
+    return router->hash();
   }
 };
 
