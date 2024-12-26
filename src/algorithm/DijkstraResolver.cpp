@@ -47,14 +47,17 @@ Stack<T> DijkstraResolver<T, WEIGHT_T>::getShortestPath(T target)
     Stack<T> path;
     T prev = target;
     path.push(prev);
-    do
-    {
-        prev = predecessors.get(prev);
-        path.push(prev);
+    try {
+        do
+        {
+            prev = predecessors.get(prev);
+            path.push(prev);
+        }
+        while (prev != origin);
+        return path;
+    } catch (const std::invalid_argument&) {
+        return path;
     }
-    while (prev != origin);
-
-    return path;
 }
 
 template class DijkstraResolver<Router*, uint16_t>;

@@ -8,11 +8,13 @@ int main() {
   auto router2 = new Router("2");
   auto router3 = new Router("3");
   auto router4 = new Router("4");
+  auto router5 = new Router("5");
 
   nm->addRouter(router1);
   nm->addRouter(router2);
   nm->addRouter(router3);
   nm->addRouter(router4);
+  nm->addRouter(router5);
   nm->connect(router1, router2, 3);
   nm->connect(router2, router3, 4);
   nm->connect(router1, router3, 2);
@@ -22,8 +24,8 @@ int main() {
   nm->printGraph();
 
   std::cout << "------------" << std::endl;
-  std::this_thread::sleep_for(std::chrono::seconds(5));
-  Stack<Router *> stack = router1->getShortestPath(router4);
+  std::this_thread::sleep_for(std::chrono::seconds(3));
+  Stack<Router *> stack = router1->getShortestPath(router5);
 
   while (!stack.isEmpty()) {
     std::cout << stack.pop() << std::endl;
