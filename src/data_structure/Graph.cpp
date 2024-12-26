@@ -35,6 +35,15 @@ void Graph<T, WEIGHT_T>::addEdge(T u, T v, WEIGHT_T weight)
     adjList.get(v)->set(u, weight);
 }
 
+template<typename T, typename WEIGHT_T>
+WEIGHT_T Graph<T, WEIGHT_T>::getEdgeWeight(T &u, T &v) {
+    try {
+        return adjList.get(u)->get(v);
+    } catch (const std::invalid_argument) {
+        return 0;
+    }
+}
+
 template <typename T, typename WEIGHT_T>
 void Graph<T, WEIGHT_T>::removeEdge(T u, T v)
 {

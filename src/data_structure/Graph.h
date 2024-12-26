@@ -16,6 +16,8 @@ public:
 
     void addEdge(T u, T v, WEIGHT_T weight);
 
+    WEIGHT_T getEdgeWeight(T& u, T& v);
+
     void removeEdge(T u, T v);
 
     void printGraph();
