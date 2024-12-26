@@ -19,10 +19,7 @@ void Graph<T, WEIGHT_T>::removeNode(T node)
         adjList.erase(node);
         auto func = [node](T, ConcurrentHashmap<T, WEIGHT_T>* edges)
         {
-            if (edges->get(node)) {
-                edges->erase(node);
-            }
-
+            edges->erase(node);
         };
         adjList.visitAll(func);
     }

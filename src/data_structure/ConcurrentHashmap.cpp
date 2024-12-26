@@ -78,7 +78,7 @@ template <typename Key, typename Value>
 void ConcurrentHashmap<Key, Value>::erase(const Key& key)
 {
     uint32_t used_buckets_ = used_buckets.load(std::memory_order_acquire);
-    if (used_buckets_ == 0) throw std::invalid_argument("Can't erase key on an empty map.");
+    if (used_buckets_ == 0) return;
 
     const uint32_t val = ConcurrentHashCompute(key);
     uint32_t start = val % size;
@@ -94,7 +94,6 @@ void ConcurrentHashmap<Key, Value>::erase(const Key& key)
         start = (start + 1) % size;
     }
     used_buckets.store(used_buckets_, std::memory_order_release);
-    throw std::invalid_argument("Key not found.");
 }
 
 template <typename Key, typename Value>
