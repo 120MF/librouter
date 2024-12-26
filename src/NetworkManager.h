@@ -18,6 +18,7 @@ public:
 
     void addRouter(Router *router);
     void removeRouter(Router *router);
+    uint32_t getLineDelay(Router *router_s, Router *router_v);
 
     void connect(Router *router1, Router *router2);
     void connect(Router *router1, Router *router2, uint16_t weight);

@@ -14,6 +14,10 @@ void NetworkManager::removeRouter(Router *router) {
     graph.removeNode(router);
 }
 
+uint32_t NetworkManager::getLineDelay(Router *router_s, Router *router_v) {
+    return graph.getEdgeWeight(router_s, router_v);
+}
+
 void NetworkManager::connect(Router *router1, Router *router2) {
     auto weight = router1->delay() + router2->delay();
     graph.addEdge(router1, router2, weight);
