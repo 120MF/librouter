@@ -40,6 +40,7 @@ public:
     void erase(const Key& key);
 
     void visitAll(std::function<void(Key, Value)> func);
+    void visitAllWhen(std::function<void(Key, Value)> func, bool& flag);
 
 private:
     ConcurrentBucket<Key, Value>** Hashtable;

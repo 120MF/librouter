@@ -6,6 +6,11 @@
 #include "Router.h"
 
 
+template<typename T, typename WEIGHT_T>
+T Graph<T, WEIGHT_T>::getNode(const uint32_t &hash) {
+    return adjList.getKey(hash);
+}
+
 template <typename T, typename WEIGHT_T>
 void Graph<T, WEIGHT_T>::addNode(T node)
 {
@@ -72,6 +77,14 @@ void Graph<T, WEIGHT_T>::visitAllNode(std::function<void(T&)> func)
     {
         func(u);
     });
+}
+
+template<typename T, typename WEIGHT_T>
+void Graph<T, WEIGHT_T>::visitAllNodeWhen(std::function<void(T &)> func, bool &flag) {
+    adjList.visitAllWhen([func](T u, auto)
+    {
+        func(u);
+    }, flag);
 }
 
 template <typename T, typename WEIGHT_T>

@@ -10,6 +10,8 @@ template <typename T, typename WEIGHT_T>
 class Graph
 {
 public:
+    T getNode(const uint32_t& hash);
+
     void addNode(T node);
 
     void removeNode(T node);
@@ -23,6 +25,7 @@ public:
     void printGraph();
 
     void visitAllNode(std::function<void(T&)> func);
+    void visitAllNodeWhen(std::function<void(T&)> func, bool& flag);
 
     void visitAllEdge(T& u, std::function<void(T, WEIGHT_T)> func);
 

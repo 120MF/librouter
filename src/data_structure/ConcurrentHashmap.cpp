@@ -131,6 +131,21 @@ void ConcurrentHashmap<Key, Value>::visitAll(std::function<void(Key, Value)> fun
     }
 }
 
+template<typename Key, typename Value>
+void ConcurrentHashmap<Key, Value>::visitAllWhen(std::function<void(Key, Value)> func, bool& flag) {
+    if (used_buckets.load(std::memory_order_relaxed) == 0) return;
+    uint32_t visited = 0;
+    for (uint32_t t = 0; t < size && visited < used_buckets && flag; t++)
+    {
+        if (Hashtable[t] != nullptr)
+        {
+            visited++;
+            func(Hashtable[t]->key.load(std::memory_order_acquire),
+                 Hashtable[t]->value.load(std::memory_order_acquire));
+        }
+    }
+}
+
 template <typename Key, typename Value>
 void ConcurrentHashmap<Key, Value>::resize()
 {
