@@ -15,12 +15,20 @@ void Graph<T, WEIGHT_T>::addNode(T node)
 template <typename T, typename WEIGHT_T>
 void Graph<T, WEIGHT_T>::removeNode(T node)
 {
-    adjList.erase(node);
-    auto func = [node](T, ConcurrentHashmap<T, WEIGHT_T>* edges)
-    {
-        edges->erase(node);
-    };
-    adjList.visitAll(func);
+    try {
+        adjList.erase(node);
+        auto func = [node](T, ConcurrentHashmap<T, WEIGHT_T>* edges)
+        {
+            if (edges->get(node)) {
+                edges->erase(node);
+            }
+
+        };
+        adjList.visitAll(func);
+    }
+    catch (const std::invalid_argument& e) {
+        std::cout << e.what() << std::endl;
+    }
 }
 
 template <typename T, typename WEIGHT_T>
