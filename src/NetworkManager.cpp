@@ -10,10 +10,16 @@ void NetworkManager::addRouter(Router *router) {
     ++router_count;
 }
 
+void NetworkManager::removeRouter(Router *router) {
+    graph.removeNode(router);
+}
+
+void NetworkManager::connect(Router *router1, Router *router2) {
+    auto weight = router1->delay() + router2->delay();
+    graph.addEdge(router1, router2, weight);
+}
+
 void NetworkManager::connect(Router *router1, Router *router2, uint16_t weight = 0) {
-    if (weight == 0) {
-        weight = router1->delay() + router2->delay();
-    }
     graph.addEdge(router1, router2, weight);
 }
 

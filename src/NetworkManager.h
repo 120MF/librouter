@@ -2,7 +2,7 @@
 #define NETWORKMANAGER_H
 #include "data_structure/Graph.h"
 #include "Router.h"
-#include "BS_thread_pool.hpp"
+#include "../3rdparty/bs_thread_pool/include/BS_thread_pool.hpp"
 
 class Router;
 
@@ -17,7 +17,9 @@ public:
     static NetworkManager *getInstance();
 
     void addRouter(Router *router);
+    void removeRouter(Router *router);
 
+    void connect(Router *router1, Router *router2);
     void connect(Router *router1, Router *router2, uint16_t weight);
 
     Graph<Router *, uint16_t> *get_graph() { return &graph; }
