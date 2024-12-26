@@ -74,6 +74,25 @@ Value ConcurrentHashmap<Key, Value>::get(const Key& key)
     throw std::invalid_argument("Key not found.");
 }
 
+template<typename Key, typename Value>
+Key ConcurrentHashmap<Key, Value>::getKey(const uint32_t &hash) {
+    if (used_buckets.load(std::memory_order_relaxed) == 0)
+        throw std::invalid_argument(
+            "Can't find key on an empty map.");
+    const uint32_t val = hash;
+    uint32_t start = val % size;
+    const uint32_t end = (start > 0) ? ((start - 1) % size) : size - 1;
+    while (start != end)
+    {
+        if (Hashtable[start] != nullptr)
+        {
+            return Hashtable[start]->key.load(std::memory_order_acquire);
+        }
+        start = (start + 1) % size;
+    }
+    throw std::invalid_argument("Hash not found.");
+}
+
 template <typename Key, typename Value>
 void ConcurrentHashmap<Key, Value>::erase(const Key& key)
 {

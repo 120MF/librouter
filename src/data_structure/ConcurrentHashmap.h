@@ -35,6 +35,7 @@ public:
     bool set(Key key, Value value);
 
     Value get(const Key& key);
+    Key getKey(const uint32_t &hash);
 
     void erase(const Key& key);
 
