@@ -3,59 +3,50 @@
 
 #include "NetworkManager.h"
 #include "Router.h"
-#include "data_structure/PriorityQueue.h"
 
-static void BM_SimpleRouterDijstraResolve(benchmark::State &state) {
-    const auto router1 = std::make_shared<Router>("1");
-    const auto router2 = std::make_shared<Router>("2");
-    const auto router3 = std::make_shared<Router>("3");
-    const auto router4 = std::make_shared<Router>("4");
-
-    auto nm = NetworkManager::getInstance();
-    nm->stopTimer();
-    nm->addRouter(router1.get());
-    nm->addRouter(router2.get());
-    nm->addRouter(router3.get());
-    nm->addRouter(router4.get());
-
-    nm->connect(router1.get(), router2.get(), 3);
-    nm->connect(router2.get(), router3.get(), 4);
-    nm->connect(router1.get(), router3.get(), 2);
-    nm->connect(router1.get(), router4.get(), 10);
-    nm->connect(router3.get(), router4.get(), 1);
-
-    for (auto _:state) {
-        router1->resolve();
-    }
-}
-
-BENCHMARK(BM_SimpleRouterDijstraResolve);
-
-static void BM_1000RouterDijstraResolve(benchmark::State &state) {
+static void BM_RouterDijkstraResolve(benchmark::State &state, int routers_edges_num) {
     std::random_device rd_;
     std::mt19937 gen_(rd_());
-    std::uniform_int_distribution<> distro_(0, 200);
-    auto pg = PriorityQueue<Router*>();
+    std::uniform_int_distribution<> distro_(0, routers_edges_num - 1);
+
+    Router *router_array[routers_edges_num];
     auto nm = NetworkManager::getInstance();
     nm->stopTimer();
-    for (int i = 0; i < 1000; i++) {
-        const auto delay = distro_(gen_);
-        auto router = std::make_shared<Router>(std::to_string(i), delay);
-        nm->addRouter(router.get());
-        pg.enqueue(router.get(), delay);
+
+    for (int i = 0; i < routers_edges_num; i++) {
+        const auto router = new Router(std::to_string(i));
+        nm->addRouter(router);
+        router_array[i] = router;
     }
-    Router* another_router_ = pg.pop();
-    for (int i = 0; i < 1000; i++) {
-        if (another_router_ != pg.top()) {
-            nm->connect(another_router_, pg.top());
-            another_router_ = pg.pop();
+    uint32_t edges = 0;
+    while (edges < routers_edges_num) {
+        Router *router = router_array[distro_(gen_)];
+        Router *another_router_ = router_array[distro_(gen_)];
+        if (another_router_ != router) {
+            ++edges;
+            nm->connect(another_router_, router);
         }
     }
+    Router *another_router_ = router_array[distro_(gen_)];
     for (auto _: state) {
         another_router_->resolve();
     }
+    for (const Router *router: router_array) {
+        delete router;
+    }
 }
 
-BENCHMARK(BM_1000RouterDijstraResolve);
+static void BM_RouterDijkstraResolveWith_N_RouterAndEdges(benchmark::State &state) {
+    BM_RouterDijkstraResolve(state, static_cast<int>(state.range(0)));
+}
+
+BENCHMARK(BM_RouterDijkstraResolveWith_N_RouterAndEdges)->Arg(100);
+BENCHMARK(BM_RouterDijkstraResolveWith_N_RouterAndEdges)->Arg(500);
+BENCHMARK(BM_RouterDijkstraResolveWith_N_RouterAndEdges)->Arg(1000);
+BENCHMARK(BM_RouterDijkstraResolveWith_N_RouterAndEdges)->Arg(2000);
+BENCHMARK(BM_RouterDijkstraResolveWith_N_RouterAndEdges)->Arg(5000);
+BENCHMARK(BM_RouterDijkstraResolveWith_N_RouterAndEdges)->Arg(10000);
+BENCHMARK(BM_RouterDijkstraResolveWith_N_RouterAndEdges)->Arg(20000);
+BENCHMARK(BM_RouterDijkstraResolveWith_N_RouterAndEdges)->Arg(50000);
 
 BENCHMARK_MAIN();
