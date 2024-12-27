@@ -1,18 +1,11 @@
+#include <random>
 #include <benchmark/benchmark.h>
 
 #include "NetworkManager.h"
 #include "Router.h"
+#include "data_structure/PriorityQueue.h"
 
-// // Define another benchmark
-// static void BM_StringCopy(benchmark::State &state) {
-//     std::string x = "hello";
-//     for (auto _: state)
-//         std::string copy(x);
-// }
-//
-// BENCHMARK(BM_StringCopy);
-
-static void BM_RouterDijstraResolve(benchmark::State &state) {
+static void BM_SimpleRouterDijstraResolve(benchmark::State &state) {
     const auto router1 = std::make_shared<Router>("1");
     const auto router2 = std::make_shared<Router>("2");
     const auto router3 = std::make_shared<Router>("3");
@@ -36,6 +29,33 @@ static void BM_RouterDijstraResolve(benchmark::State &state) {
     }
 }
 
-BENCHMARK(BM_RouterDijstraResolve);
+BENCHMARK(BM_SimpleRouterDijstraResolve);
+
+static void BM_1000RouterDijstraResolve(benchmark::State &state) {
+    std::random_device rd_;
+    std::mt19937 gen_(rd_());
+    std::uniform_int_distribution<> distro_(0, 200);
+    auto pg = PriorityQueue<Router*>();
+    auto nm = NetworkManager::getInstance();
+    nm->stopTimer();
+    for (int i = 0; i < 1000; i++) {
+        const auto delay = distro_(gen_);
+        auto router = std::make_shared<Router>(std::to_string(i), delay);
+        nm->addRouter(router.get());
+        pg.enqueue(router.get(), delay);
+    }
+    Router* another_router_ = pg.pop();
+    for (int i = 0; i < 1000; i++) {
+        if (another_router_ != pg.top()) {
+            nm->connect(another_router_, pg.top());
+            another_router_ = pg.pop();
+        }
+    }
+    for (auto _: state) {
+        another_router_->resolve();
+    }
+}
+
+BENCHMARK(BM_1000RouterDijstraResolve);
 
 BENCHMARK_MAIN();

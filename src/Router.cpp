@@ -3,9 +3,9 @@
 #include "utils/HashCompute.hpp"
 #include "NetworkManager.h"
 
-std::random_device rd;
-std::mt19937 gen(rd());
-std::uniform_int_distribution<> distro(0, 200);
+std::random_device rd_;
+std::mt19937 gen_(rd_());
+std::uniform_int_distribution<> distro_(0, 200);
 
 Router::Router()
 {
@@ -13,8 +13,7 @@ Router::Router()
     this->_uuid = uuids::to_string(id);
     this->_hash = std::hash<std::string>()(_uuid);
     this->_name = " ";
-    _delay = distro(gen);
-    std::cout << "Unnamed router initiliazed" << std::endl;
+    _delay = distro_(gen_);
 }
 
 Router::Router(uint16_t delay)
@@ -24,7 +23,6 @@ Router::Router(uint16_t delay)
     this->_hash = std::hash<std::string>()(_uuid);
     this->_name = " ";
     _delay = delay;
-    std::cout << "Unnamed router initiliazed" << std::endl;
 }
 
 Router::Router(const std::string& name)
@@ -33,8 +31,7 @@ Router::Router(const std::string& name)
     this->_uuid = uuids::to_string(id);
     this->_hash = std::hash<std::string>()(_uuid);
     this->_name = name;
-    _delay = distro(gen);
-    std::cout << "router " << name << " initiliazed" << std::endl;
+    _delay = distro_(gen_);
 }
 
 Router::Router(const std::string& name, uint16_t delay)
@@ -44,7 +41,6 @@ Router::Router(const std::string& name, uint16_t delay)
     this->_hash = std::hash<std::string>()(_uuid);
     this->_name = name;
     _delay = delay;
-    std::cout << "router " << name << " initiliazed" << std::endl;
 }
 
 void Router::resolve()
