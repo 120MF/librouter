@@ -1,5 +1,7 @@
 #include <random>
 #include <benchmark/benchmark.h>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/dijkstra_shortest_paths.hpp>
 
 #include "NetworkManager.h"
 #include "Router.h"
@@ -45,6 +47,49 @@ BENCHMARK(BM_RouterDijkstraResolve)->Arg(5000);
 BENCHMARK(BM_RouterDijkstraResolve)->Arg(10000);
 BENCHMARK(BM_RouterDijkstraResolve)->Arg(20000);
 BENCHMARK(BM_RouterDijkstraResolve)->Arg(50000);
+
+static void BM_RouterDijkstraResolve_Boost(benchmark::State &state) {
+    using namespace boost;
+    typedef adjacency_list<vecS, vecS, directedS, no_property, property<edge_weight_t, int> > Graph;
+    typedef graph_traits<Graph>::vertex_descriptor Vertex;
+    typedef std::pair<int, int> Edge;
+
+    std::random_device rd_;
+    std::mt19937 gen_(rd_());
+    std::uniform_int_distribution<> distro_(0, state.range() - 1);
+
+    std::vector<Edge> edges;
+    std::vector<int> weights;
+    std::vector<Vertex> vertices(state.range());
+
+    for (int i = 0; i < state.range(); ++i) {
+        vertices[i] = i;
+    }
+
+    for (int i = 0; i < state.range(); ++i) {
+        for (int j = i + 1; j < state.range(); ++j) {
+            if (distro_(gen_) % 2 == 0) {
+                edges.emplace_back(i, j);
+                weights.push_back(distro_(gen_) % 100 + 1);
+            }
+        }
+    }
+
+    Graph g(edges.begin(), edges.end(), weights.begin(), state.range());
+
+    std::vector<int> distances(state.range());
+    for (auto _: state) {
+        dijkstra_shortest_paths(g, vertices[0], distance_map(&distances[0]));
+    }
+}
+
+BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(100);
+BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(500);
+BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(1000);
+BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(2000);
+BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(5000);
+BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(10000);
+BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(20000);
 
 static void BM_AddRouter(benchmark::State &state) {
     std::random_device rd_;
