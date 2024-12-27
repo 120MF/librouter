@@ -8,6 +8,14 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(GENERATE_EXAMPLE_PROGRAM "Compile the example.cpp into an executable." ON)
 option(GENERATE_BENCHMARK_TEST "Compile the benchmark source into an executable." ON)
 
+find_package(Boost)
+if(Boost_FOUND)
+    message(STATUS "Boost found: ${Boost_VERSION}")
+else ()
+    message(STATUS "Boost not found, benchmark won't be built.")
+    set(${GENERATE_BENCHMARK_TEST} OFF)
+endif ()
+
 # a quick fix, create a fork of stduuid to exterminate it.
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/stduuid/cmake)
