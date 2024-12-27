@@ -21,6 +21,13 @@ int main() {
   nm->connect(router1, router4, 10);
   nm->connect(router3, router4, 1);
 
+  nm->connect(router5, router1, 5);
+  nm->connect(router5, router2, 10);
+
+  std::cout << std::chrono::system_clock::now() << std::endl;
+  nm->removeRouter(router5);
+  std::cout << std::chrono::system_clock::now() << std::endl;
+
   nm->printGraph();
 
   std::cout << "------------" << std::endl;
