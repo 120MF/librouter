@@ -2,25 +2,37 @@
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <iostream>
 #include <vector>
+#include <random>
 #include "data_structure/Graph.h"
 #include "algorithm/DijkstraResolver.h"
 
-// Define the graph using Boost
 typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS, boost::no_property, boost::property<boost::edge_weight_t, int>> BoostGraph;
 typedef boost::graph_traits<BoostGraph>::vertex_descriptor Vertex;
 typedef std::pair<int, int> Edge;
 
 int main() {
-    // Generate nodes and edges
-    const int num_nodes = 5;
-    Edge edge_array[] = { Edge(0, 1), Edge(0, 2), Edge(1, 2), Edge(1, 3), Edge(2, 3), Edge(3, 4) };
-    int weights[] = { 10, 3, 1, 2, 4, 2 };
-    const int num_edges = sizeof(edge_array) / sizeof(edge_array[0]);
+    constexpr int num_nodes = 2000;
+    constexpr int num_edges = 2000;
 
-    // Create Boost graph
-    BoostGraph boost_graph(edge_array, edge_array + num_edges, weights, num_nodes);
+    std::vector<Edge> edge_array;
+    std::vector<int> weights;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, num_nodes - 1);
+    std::uniform_int_distribution<> weight_dis(1, 100);
+    int cnt_edges = 0;
+    while (cnt_edges < num_edges){
+        int u = dis(gen);
+        int v = dis(gen);
+        if (u != v) {
+            edge_array.emplace_back(u, v);
+            weights.push_back(weight_dis(gen));
+            ++cnt_edges;
+        }
+    }
 
-    // Calculate the shortest path using Boost's Dijkstra
+    BoostGraph boost_graph(edge_array.begin(), edge_array.end(), weights.begin(), num_nodes);
+
     std::vector<Vertex> predecessors(num_nodes);
     std::vector<int> distances(num_nodes);
     Vertex start_vertex = 0;
@@ -28,54 +40,37 @@ int main() {
         boost::predecessor_map(boost::make_iterator_property_map(predecessors.begin(), boost::get(boost::vertex_index, boost_graph))).
         distance_map(boost::make_iterator_property_map(distances.begin(), boost::get(boost::vertex_index, boost_graph))));
 
-    // Print Boost's Dijkstra results
-    std::cout << "Boost Dijkstra results:" << std::endl;
+    constexpr int target_vertex = 1000;
+
+    std::vector<int> boost_path;
+    for (int v = target_vertex; v != start_vertex; v = predecessors[v]) {
+        boost_path.push_back(v);
+    }
+    boost_path.push_back(start_vertex);
+    std::ranges::reverse(boost_path);
+
+    Graph<int, int> lr_graph;
     for (int i = 0; i < num_nodes; ++i) {
-        std::cout << "Distance to node " << i << " is " << distances[i] << std::endl;
+        lr_graph.addNode(i);
+    }
+    for (size_t i = 0; i < edge_array.size(); ++i) {
+        lr_graph.addEdge(edge_array[i].first, edge_array[i].second, weights[i]);
     }
 
-    // Function to print the shortest path from start_vertex to target_vertex
-    auto print_path = [&](int target_vertex) {
-        std::vector<int> path;
-        for (int v = target_vertex; v != start_vertex; v = predecessors[v]) {
-            path.push_back(v);
-        }
-        path.push_back(start_vertex);
-        std::reverse(path.begin(), path.end());
-        std::cout << "Path: ";
-        for (int v : path) {
-            std::cout << v << " ";
-        }
-        std::cout << std::endl;
-    };
+    DijkstraResolver<int, int> lr_dijkstra_resolver(start_vertex);
+    lr_dijkstra_resolver.resolve(&lr_graph);
+    Stack<int> lr_stack = lr_dijkstra_resolver.getShortestPath(target_vertex);
 
-    // Print the shortest path to node 4
-    print_path(4);
-
-    // Create your graph
-    Graph<int, int> my_graph;
-    for (int i = 0; i < num_nodes; ++i) {
-        my_graph.addNode(i);
+    std::vector<int> lr_path;
+    while (!lr_stack.isEmpty()) {
+        lr_path.push_back(lr_stack.pop());
     }
-    for (int i = 0; i < num_edges; ++i) {
-        my_graph.addEdge(edge_array[i].first, edge_array[i].second, weights[i]);
+    assert(boost_path.size() == lr_path.size());
+    while (!lr_path.empty()) {
+        assert(lr_path.back() == boost_path.back());
+        std::cout << boost_path.back() << std::endl;
+        lr_path.pop_back();
+        boost_path.pop_back();
     }
-
-    // Calculate shortest path using your Dijkstra resolver
-    DijkstraResolver<int, int> my_dijkstra_resolver(start_vertex);
-    my_dijkstra_resolver.resolve(&my_graph);
-    Stack<int> my_stack = my_dijkstra_resolver.getShortestPath(4); // Assuming target is node 4
-
-    // Print your Dijkstra results
-    std::cout << "My Dijkstra results:" << std::endl;
-    std::vector<int> my_path;
-    while (!my_stack.isEmpty()) {
-        my_path.push_back(my_stack.pop());
-    }
-    std::reverse(my_path.begin(), my_path.end());
-    for (int node : my_path) {
-        std::cout << "Node: " << node << std::endl;
-    }
-
     return 0;
 }
