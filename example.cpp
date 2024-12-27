@@ -25,14 +25,14 @@ int main() {
 
   std::cout << "------------" << std::endl;
   std::this_thread::sleep_for(std::chrono::seconds(3));
-  Stack<Router *> stack = router1->getShortestPath(router5);
+  Stack<Router *> stack = router1->getShortestPath(router4);
 
   while (!stack.isEmpty()) {
     std::cout << stack.pop() << std::endl;
   }
 
 
-  delete router1, router2, router3, router4;
+  delete router1, router2, router3, router4, router5;
 
   return 0;
 }
