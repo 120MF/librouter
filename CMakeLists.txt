@@ -7,13 +7,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(GENERATE_EXAMPLE_PROGRAM "Compile the example.cpp into an executable." ON)
 option(GENERATE_BENCHMARK_TEST "Compile the benchmark source into an executable." ON)
+option(GENERATE_CORRECTNESS_TEST "Compile the correctness test source into an executable." ON)
 
 find_package(Boost)
 if(Boost_FOUND)
     message(STATUS "Boost found: ${Boost_VERSION}")
 else ()
-    message(STATUS "Boost not found, benchmark won't be built.")
+    message(STATUS "Boost not found, tests which require Boost won't be built.")
     set(${GENERATE_BENCHMARK_TEST} OFF)
+    set(${GENERATE_CORRECTNESS_TEST} OFF)
 endif ()
 
 # a quick fix, create a fork of stduuid to exterminate it.
@@ -57,6 +59,13 @@ if (${GENERATE_EXAMPLE_PROGRAM})
     target_link_libraries(example librouter)
 endif ()
 
+if (${GENERATE_CORRECTNESS_TEST})
+    include(CTest)
+    add_executable(TestDijkstraCorrectness tests/dijkstra_correctness_test.cpp)
+    add_test(NAME TestDijkstraCorrectness
+             COMMAND TestDijkstraCorrectness
+    )
+endif ()
 if (${GENERATE_BENCHMARK_TEST})
     set(BENCHMARK_ENABLE_GTEST_TESTS OFF)
     add_subdirectory(3rdparty/benchmark)
