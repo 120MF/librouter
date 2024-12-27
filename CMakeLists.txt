@@ -62,6 +62,7 @@ endif ()
 if (${GENERATE_CORRECTNESS_TEST})
     include(CTest)
     add_executable(TestDijkstraCorrectness tests/dijkstra_correctness_test.cpp)
+    target_link_libraries(TestDijkstraCorrectness librouter)
     add_test(NAME TestDijkstraCorrectness
              COMMAND TestDijkstraCorrectness
     )

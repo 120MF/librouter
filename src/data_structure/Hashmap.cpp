@@ -127,3 +127,5 @@ template class Hashmap<Router *, uint16_t>;
 template class Hashmap<Router *, bool>;
 template class Hashmap<Router *, Router *>;
 template class Hashmap<Router *, Hashmap<Router *, uint16_t> *>;
+template class Hashmap<int, int>;
+template class Hashmap<int, bool>;

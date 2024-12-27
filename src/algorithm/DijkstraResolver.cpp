@@ -52,3 +52,4 @@ Stack<T> DijkstraResolver<T, WEIGHT_T>::getShortestPath(T target) {
 }
 
 template class DijkstraResolver<Router *, uint16_t>;
+template class DijkstraResolver<int, int>;
