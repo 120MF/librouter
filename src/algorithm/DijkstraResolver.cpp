@@ -13,8 +13,8 @@ template<typename T, typename WEIGHT_T>
 void DijkstraResolver<T, WEIGHT_T>::resolve(Graph<T, WEIGHT_T> *graph) {
     PriorityQueue<T> queue;
     Hashmap<T, bool> visited;
-    Hashmap<T, WEIGHT_T> dis;
-    graph->visitAllNode([&dis,&visited](T &u) {
+
+    graph->visitAllNode([this,&visited](T &u) {
         dis.set(u, MaxValue<WEIGHT_T>::value);
         visited.set(u, false);
     });
@@ -22,16 +22,24 @@ void DijkstraResolver<T, WEIGHT_T>::resolve(Graph<T, WEIGHT_T> *graph) {
     queue.enqueue(origin, 0);
     while (!queue.isEmpty()) {
         T u = queue.pop();
-        // std::cout << u << std::endl;
         if (visited.get(u)) continue;
         visited.set(u, true);
-        graph->visitAllEdge(u, [this,&u,&dis,&queue](T v, WEIGHT_T w) {
+        graph->visitAllEdge(u, [this,&u,&queue](T v, WEIGHT_T w) {
             if (dis.get(v) > dis.get(u) + w) {
                 dis.set(v, dis.get(u) + w);
                 queue.enqueue(v, dis.get(v));
                 predecessors.set(v, u);
             }
         });
+    }
+}
+
+template<typename T, typename WEIGHT_T>
+WEIGHT_T DijkstraResolver<T, WEIGHT_T>::getShortestWeight(T target) {
+    try {
+        return dis.get(target);
+    } catch (const std::invalid_argument &) {
+        return MaxValue<WEIGHT_T>::value;
     }
 }
 
@@ -52,4 +60,4 @@ Stack<T> DijkstraResolver<T, WEIGHT_T>::getShortestPath(T target) {
 }
 
 template class DijkstraResolver<Router *, uint16_t>;
-template class DijkstraResolver<int, int>;
+template class DijkstraResolver<uint64_t, uint64_t>;

@@ -76,5 +76,5 @@ void Stack<T, SIZE_TYPE>::resize() {
     array = newArray;
 }
 
-template class Stack<int, size_t>;
+template class Stack<uint64_t, uint64_t>;
 template class Stack<Router *, size_t>;

@@ -60,3 +60,4 @@ uint16_t PriorityQueue<T>::peek() {
 
 template class PriorityQueue<Router *>;
 template class PriorityQueue<int>;
+template class PriorityQueue<uint64_t>;

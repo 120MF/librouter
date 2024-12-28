@@ -18,11 +18,14 @@ public:
 
     void resolve(Graph<T, WEIGHT_T> *graph);
 
+    WEIGHT_T getShortestWeight(T target);
+
     Stack<T> getShortestPath(T target);
 
 private:
     T origin;
     Hashmap<T, T> predecessors;
+    Hashmap<T, WEIGHT_T> dis;
 };
 
 
