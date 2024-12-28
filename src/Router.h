@@ -30,14 +30,19 @@ public:
   /// @param delay Router's delay, mustn't be negative
   Router(const std::string &name, uint16_t delay);
 
-  /// Run Dijkstra start from the Router
+  /// Run Dijkstra start from this
   void resolve();
 
-  /// Get the shortest path from the router to the target router.
+  /// Get the shortest path from this to the target router.
   /// It will get stuck when the resolve task is running.
   /// @param target the target router.
   /// @return a Stack containing the path. use Stack::pop() method to iterate it.
   Stack<Router *> getShortestPath(Router *target);
+
+  /// Get the shortest path's weight sum from this to the target router.
+  /// @param target the target router.
+  /// @return the weight sum from this to target router
+  uint32_t getShortestWeight(Router *target);
 
   std::chrono::time_point<std::chrono::system_clock> last_update_timestamp;
   std::future<void> have_updated;

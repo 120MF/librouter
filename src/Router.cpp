@@ -59,3 +59,7 @@ Stack<Router *> Router::getShortestPath(Router *target) {
     return _dijkstra_resolver.getShortestPath(target);
 }
 
+uint32_t Router::getShortestWeight(Router *target) {
+    return _dijkstra_resolver.getShortestWeight(target);
+}
+
