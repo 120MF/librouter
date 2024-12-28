@@ -15,8 +15,8 @@ typedef boost::graph_traits<BoostGraph>::vertex_descriptor Vertex;
 typedef std::pair<uint64_t, uint64_t> Edge;
 
 int main() {
-    constexpr uint64_t num_nodes = 1000;
-    constexpr uint64_t num_edges = 3000;
+    constexpr uint64_t num_nodes = 50;
+    constexpr uint64_t num_edges = 400;
 
     std::vector<Edge> edge_array;
     std::vector<uint64_t> weights;
@@ -46,7 +46,7 @@ int main() {
                                    distance_map(boost::make_iterator_property_map(
                                        distances.begin(), boost::get(boost::vertex_index, boost_graph))));
 
-    uint64_t target_vertex = 200;
+    uint64_t target_vertex = num_nodes / 4;
     while (distances[target_vertex] == std::numeric_limits<uint64_t>::max()) {
         ++target_vertex;
     }
