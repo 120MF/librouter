@@ -83,3 +83,4 @@ void Graph<T, WEIGHT_T>::visitAllEdge(T &u, std::function<void(T, WEIGHT_T)> fun
 
 template class Graph<Router *, uint16_t>;
 template class Graph<uint64_t, uint64_t>;
+template class Graph<int, int>;

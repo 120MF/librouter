@@ -160,5 +160,7 @@ void ConcurrentHashmap<Key, Value>::resize() {
 
 template class ConcurrentHashmap<Router *, uint16_t>;
 template class ConcurrentHashmap<Router *, ConcurrentHashmap<Router *, uint16_t> *>;
+template class ConcurrentHashmap<int, int>;
+template class ConcurrentHashmap<int, ConcurrentHashmap<int, int> *>;
 template class ConcurrentHashmap<uint64_t, uint64_t>;
 template class ConcurrentHashmap<uint64_t, ConcurrentHashmap<uint64_t, uint64_t> *>;
