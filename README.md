@@ -14,6 +14,21 @@ cd build
 ninja
 ```
 
+## 测试
+
+- 确保Boost库已安装；
+- 按照上文编译；
+- 编译出`librouter_benchmark`可执行文件，运行即可进行性能测试；
+- 可使用CTest测试Dijkstra算法实现的正确性。样例随机生成，使用Boost的Dijkstra算法进行检验。
+
+```shell
+cd build
+./librouter_benchmark
+# benchmark...
+ctest -R TestDijkstraCorrectnes --extra-verbose
+# correctness test...
+```
+
 ## 大概不会实现
 
 - [ ] 路由器对象独立消息队列
@@ -22,17 +37,19 @@ ninja
 
 ## 待实现
 
-- [ ] Dijkstra 多线程任务队列
+- [x] Dijkstra 多线程任务队列
 - [x] ConcurrentHashmap
 
 ## 待完善
 
 - [ ] PriorityQueue的resize功能
-- [ ] data_structure的拷贝函数
-- [ ] HashCompute
+- [ ] PriorityQueue确认优先级比较方式的Template
+- [ ] HashCompute分离
 - [ ] doxygen文档
 
 ## Credit
 
 - [bs_thread_pool](https://github.com/bshoshany/thread-pool)
 - [stduuid](https://github.com/mariusbancila/stduuid)
+- [Google Benchmark](https://github.com/google/benchmark)
+- [Boost C++ Library](https://www.boost.org/)
