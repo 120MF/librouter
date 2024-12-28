@@ -15,18 +15,14 @@ typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, boo
 typedef boost::graph_traits<BoostGraph>::vertex_descriptor Vertex;
 typedef std::pair<uint64_t, uint64_t> Edge;
 
-std::set<Edge> edge_set;
-
-int main() {
-    constexpr uint64_t num_nodes = 1000;
-    constexpr uint64_t num_edges = 2000;
-
+void test(uint64_t num_nodes, uint64_t num_edges) {
     std::vector<Edge> edge_array;
     std::vector<uint64_t> weights;
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, num_nodes - 1);
+    std::uniform_int_distribution<uint64_t> dis(0, num_nodes - 1);
     std::uniform_int_distribution<> weight_dis(1, 100);
+    std::set<Edge> edge_set;
     uint64_t cnt_edges = 0;
     while (cnt_edges < num_edges) {
         uint64_t u = dis(gen);
@@ -100,13 +96,29 @@ int main() {
     }
     assert(boost_path.size() == lr_path.size());
     std::cout << "Length Correct" << std::endl;
+
     assert(distances[target_vertex] == lr_dijkstra_resolver.getShortestWeight(target_vertex));
     std::cout << "Distance Correct" << std::endl;
+
     while (!lr_path.empty()) {
         assert(lr_path.back() == boost_path.back());
         lr_path.pop_back();
         boost_path.pop_back();
     }
     std::cout << "Path Correct" << std::endl;
-    return 0;
+    std::cout << "Test Complete!" << std::endl;
+}
+
+int main() {
+    std::cout << "Test 1 : 100 Nodes + 200 Edges" << std::endl;
+    test(100, 200);
+    std::cout << "Test 2 : 500 Nodes + 1500 Edges" << std::endl;
+    test(500, 1500);
+    std::cout << "Test 3 : 2000 Nodes + 5000 Edges" << std::endl;
+    test(2000, 5000);
+    std::cout << "Test 4 : 5000 Nodes + 15000 Edges" << std::endl;
+    test(5000, 15000);
+    std::cout << "Test 5 : 10000 Nodes + 30000 Edges" << std::endl;
+    test(10000, 30000);
+    std::cout << "All tests complete!" << std::endl;
 }
