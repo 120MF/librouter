@@ -1,6 +1,4 @@
 #include "DijkstraResolver.h"
-
-#include <iostream>
 #include "utils/MaxValue.hpp"
 #include "Router.h"
 #include "data_structure/PriorityQueue.h"

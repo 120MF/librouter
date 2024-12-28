@@ -59,7 +59,7 @@ public:
 
     /// Get the Key that have the same hash in the params.
     /// Must pass a callback function to varify the Key found at place and avoid from hash conflict
-    /// @param hash the hash same as the Key's that you want to get
+    /// @param hash the hash same as the target Key's
     /// @param equal a callback function. Pass the key found at the place, return whether the Key is the one you want to get.
     /// @return The Key that have the same hash in the params.
     Key getKey(const uint32_t &hash, std::function<bool(Key &)> equal);

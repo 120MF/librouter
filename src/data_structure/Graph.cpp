@@ -8,7 +8,7 @@
 
 template<typename T, typename WEIGHT_T>
 T Graph<T, WEIGHT_T>::getNode(const uint32_t &hash, std::function<bool(T &)> equal) {
-    return adjList.getKey(hash, equal);
+    return adjList.getKey(hash, std::move(equal));
 }
 
 template<typename T, typename WEIGHT_T>
@@ -25,7 +25,7 @@ void Graph<T, WEIGHT_T>::removeNode(T node) {
         };
         adjList.visitAll(func);
     } catch (const std::invalid_argument &e) {
-        std::cout << e.what() << std::endl;
+        // std::cout << e.what() << std::endl;
     }
 }
 

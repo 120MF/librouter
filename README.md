@@ -45,7 +45,7 @@ ctest -R TestDijkstraCorrectnes --extra-verbose
 - [ ] PriorityQueue的resize功能
 - [ ] PriorityQueue确认优先级比较方式的Template
 - [ ] HashCompute分离
-- [ ] doxygen文档
+- [x] doxygen文档
 
 ## Credit
 
