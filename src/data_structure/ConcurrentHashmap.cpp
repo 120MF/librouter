@@ -25,6 +25,7 @@ bool ConcurrentHashmap<Key, Value>::set(Key key, Value value) {
     if (used_buckets_ + 1 > size * load_factor) resize();
     const uint32_t val = ConcurrentHashCompute(key);
     uint32_t start = val % size;
+    // end will be the previous index of start
     const uint32_t end = (start > 0) ? ((start - 1) % size) : size - 1;
 
     bool has_key = false;
@@ -104,9 +105,11 @@ void ConcurrentHashmap<Key, Value>::erase(const Key &key) {
 
 template<typename Key, typename Value>
 void ConcurrentHashmap<Key, Value>::visitAll(std::function<void(Key, Value)> func) {
-    if (used_buckets.load(std::memory_order_relaxed) == 0) return;
+    std::shared_lock<std::shared_mutex> lock(resize_mutex);
+    const uint32_t used_buckets_ = used_buckets.load(std::memory_order_acquire);
+    if (used_buckets_ == 0) return;
     uint32_t visited = 0;
-    for (uint32_t t = 0; t < size && visited < used_buckets; t++) {
+    for (uint32_t t = 0; t < size && visited < used_buckets_; t++) {
         if (Hashtable[t] != nullptr) {
             visited++;
             func(Hashtable[t]->key.load(std::memory_order_acquire),
@@ -117,9 +120,11 @@ void ConcurrentHashmap<Key, Value>::visitAll(std::function<void(Key, Value)> fun
 
 template<typename Key, typename Value>
 void ConcurrentHashmap<Key, Value>::visitAllWhen(std::function<void(Key, Value)> func, bool &flag) {
-    if (used_buckets.load(std::memory_order_relaxed) == 0) return;
+    std::shared_lock<std::shared_mutex> lock(resize_mutex);
+    const uint32_t used_buckets_ = used_buckets.load(std::memory_order_acquire);
+    if (used_buckets_ == 0) return;
     uint32_t visited = 0;
-    for (uint32_t t = 0; t < size && visited < used_buckets && flag; t++) {
+    for (uint32_t t = 0; t < size && visited < used_buckets_ && flag; t++) {
         if (Hashtable[t] != nullptr) {
             visited++;
             func(Hashtable[t]->key.load(std::memory_order_acquire),
@@ -132,14 +137,15 @@ template<typename Key, typename Value>
 void ConcurrentHashmap<Key, Value>::resize() {
     std::unique_lock<std::shared_mutex> lock(resize_mutex);
 
-    uint32_t new_size = size * 2;
-    ConcurrentBucket<Key, Value> **new_table = new ConcurrentBucket<Key, Value> *[new_size];
+    const uint32_t new_size = size * 2;
+    auto **new_table = new ConcurrentBucket<Key, Value> *[new_size];
     for (uint32_t i = 0; i < new_size; i++) {
         new_table[i] = nullptr;
     }
 
     for (uint32_t i = 0; i < size; i++) {
         if (Hashtable[i] != nullptr) {
+            // No concurrent since resize_mutex have locked
             const uint32_t val = ConcurrentHashCompute(Hashtable[i]->key.load(std::memory_order_relaxed));
             uint32_t start = val % new_size;
             const uint32_t end = (start > 0) ? ((start - 1) % new_size) : new_size - 1;

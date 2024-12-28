@@ -28,6 +28,7 @@ bool Hashmap<Key, Value>::set(const Key key, const Value value) {
     if (used_buckets + 1 > size * load_factor) resize();
     const uint32_t val = hashCompute(key);
     uint32_t start = val % size;
+    // end will be the previous index of start
     const uint32_t end = (start > 0) ? ((start - 1) % size) : size - 1;
 
     bool has_key = false;
