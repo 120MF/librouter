@@ -9,8 +9,8 @@ option(GENERATE_EXAMPLE_PROGRAM "Compile the example.cpp into an executable." ON
 option(GENERATE_BENCHMARK_TEST "Compile the benchmark source into an executable." ON)
 option(GENERATE_CORRECTNESS_TEST "Compile the correctness test source into an executable." ON)
 
-find_package(Boost)
-if(Boost_FOUND)
+find_package(Boost CONFIG)
+if (Boost_FOUND)
     message(STATUS "Boost found: ${Boost_VERSION}")
 else ()
     message(STATUS "Boost not found, tests which require Boost won't be built.")
@@ -64,7 +64,7 @@ if (${GENERATE_CORRECTNESS_TEST})
     add_executable(TestDijkstraCorrectness tests/dijkstra_correctness_test.cpp)
     target_link_libraries(TestDijkstraCorrectness librouter)
     add_test(NAME TestDijkstraCorrectness
-             COMMAND TestDijkstraCorrectness
+            COMMAND TestDijkstraCorrectness
     )
 endif ()
 if (${GENERATE_BENCHMARK_TEST})
