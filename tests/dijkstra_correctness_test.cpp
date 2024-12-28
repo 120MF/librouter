@@ -18,8 +18,8 @@ typedef std::pair<uint64_t, uint64_t> Edge;
 std::set<Edge> edge_set;
 
 int main() {
-    constexpr uint64_t num_nodes = 20;
-    constexpr uint64_t num_edges = 50;
+    constexpr uint64_t num_nodes = 1000;
+    constexpr uint64_t num_edges = 2000;
 
     std::vector<Edge> edge_array;
     std::vector<uint64_t> weights;
@@ -62,28 +62,25 @@ int main() {
 
     std::vector<uint64_t> boost_path;
     for (uint64_t v = target_vertex; v != start_vertex; v = predecessors[v]) {
-        std::cout << v << std::endl;
         boost_path.push_back(v);
     }
     boost_path.push_back(start_vertex);
     std::ranges::reverse(boost_path);
-    std::cout << "boost_path size: " << boost_path.size() << std::endl;
-    std::cout << "boost_path sum: " << distances[target_vertex] << std::endl;
 
     // Save edges and weights to a file
-    std::ofstream edge_file("edges_weights.txt");
-    for (size_t i = 0; i < edge_array.size(); ++i) {
-        edge_file << edge_array[i].first << " " << edge_array[i].second << " " << weights[i] << "\n";
-    }
-    edge_file.close();
-
-    // Save shortest path to a file
-    std::ofstream path_file("shortest_path.txt");
-    for (const auto &vertex: boost_path) {
-        path_file << vertex << " ";
-    }
-    path_file << "\n";
-    path_file.close();
+    // std::ofstream edge_file("edges_weights.txt");
+    // for (size_t i = 0; i < edge_array.size(); ++i) {
+    //     edge_file << edge_array[i].first << " " << edge_array[i].second << " " << weights[i] << "\n";
+    // }
+    // edge_file.close();
+    //
+    // // Save shortest path to a file
+    // std::ofstream path_file("shortest_path.txt");
+    // for (const auto &vertex: boost_path) {
+    //     path_file << vertex << " ";
+    // }
+    // path_file << "\n";
+    // path_file.close();
 
     Graph<uint64_t, uint64_t> lr_graph;
     for (uint64_t i = 0; i < num_nodes; ++i) {
@@ -99,16 +96,17 @@ int main() {
 
     std::vector<uint64_t> lr_path;
     while (!lr_stack.isEmpty()) {
-        std::cout << "poped" << lr_stack.top() << std::endl;
         lr_path.push_back(lr_stack.pop());
     }
-    std::cout << "librouter path size: " << lr_path.size() << std::endl;
-    std::cout << "librouter path weight: " << lr_dijkstra_resolver.getShortestWeight(target_vertex) << std::endl;
     assert(boost_path.size() == lr_path.size());
+    std::cout << "Length Correct" << std::endl;
+    assert(distances[target_vertex] == lr_dijkstra_resolver.getShortestWeight(target_vertex));
+    std::cout << "Distance Correct" << std::endl;
     while (!lr_path.empty()) {
         assert(lr_path.back() == boost_path.back());
         lr_path.pop_back();
         boost_path.pop_back();
     }
+    std::cout << "Path Correct" << std::endl;
     return 0;
 }

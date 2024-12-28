@@ -45,12 +45,12 @@ bool PriorityQueue<T>::isEmpty() const {
 
 template<typename T>
 uint16_t PriorityQueue<T>::peek() {
-    int highestPriority = array[0].priority;
+    int smallestPriority = array[0].priority;
     uint16_t index = 0;
 
     for (int i = index; i <= size; i++) {
-        if (highestPriority < array[i].priority) {
-            highestPriority = array[i].priority;
+        if (smallestPriority > array[i].priority) {
+            smallestPriority = array[i].priority;
             index = i;
         }
     }
