@@ -12,6 +12,7 @@ void NetworkManager::addRouter(Router *router) {
 
 void NetworkManager::removeRouter(Router *router) {
     graph.removeNode(router);
+    --router_count;
 }
 
 uint32_t NetworkManager::getLineDelay(Router *router_s, Router *router_v) {
@@ -48,17 +49,21 @@ void NetworkManager::resolveTaskTimer() {
     while (!timer_stop) {
         if (router_count == 0) continue;
         auto now = std::chrono::system_clock::now();
-        graph.visitAllNode([now, this](Router* router) {
-           auto duration = std::chrono::duration_cast<std::chrono::seconds>(now - router->last_update_timestamp);
+        graph.visitAllNode([now, this](Router *router) {
+            const auto duration = std::chrono::duration_cast<std::chrono::seconds>(now - router->last_update_timestamp);
             if (duration.count() >= 2) {
+                // If 2 or more seconds have elapsed
+                // Update the timestamp in the router
                 router->last_update_timestamp = now;
-                router->have_updated = pool.submit_task([router](){router->resolve();});
+                // Submit resolve task and get a future
+                router->have_updated = pool.submit_task([router]() { router->resolve(); });
             }
         });
     }
+    // Push tasks every 1 second.
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 void NetworkManager::stopTimer() {
-    timer_stop.store(true,std::memory_order_release);
+    timer_stop.store(true, std::memory_order_release);
 }
