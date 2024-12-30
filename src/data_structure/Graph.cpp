@@ -51,6 +51,17 @@ void Graph<T, WEIGHT_T>::removeEdge(T u, T v) {
 }
 
 template<typename T, typename WEIGHT_T>
+bool Graph<T, WEIGHT_T>::isLinked(T u, T v) {
+    try {
+        adjList.get(u)->get(v);
+        adjList.get(v)->get(u);
+        return true;
+    } catch (const std::invalid_argument &) {
+        return false;
+    }
+}
+
+template<typename T, typename WEIGHT_T>
 void Graph<T, WEIGHT_T>::printGraph() {
     adjList.visitAll([](T node, ConcurrentHashmap<T, WEIGHT_T> *edge) {
         std::cout << node << std::endl;

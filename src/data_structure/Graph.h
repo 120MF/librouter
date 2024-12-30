@@ -43,6 +43,8 @@ public:
     /// @param v a Node of type T
     void removeEdge(T u, T v);
 
+    bool isLinked(T u, T v);
+
     /// Print the graph using std::cout stream
     void printGraph();
 

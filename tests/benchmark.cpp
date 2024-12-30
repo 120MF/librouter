@@ -21,10 +21,10 @@ static void BM_RouterDijkstraResolve(benchmark::State &state) {
         router_array[i] = router;
     }
     uint32_t edges = 0;
-    while (edges < state.range()) {
+    while (edges < state.range() * state.range() / 20) {
         Router *router = router_array[distro_(gen_)];
         Router *another_router_ = router_array[distro_(gen_)];
-        if (another_router_ != router) {
+        if (another_router_ != router && !nm->get_graph()->isLinked(another_router_, router)) {
             ++edges;
             nm->connect(another_router_, router);
         }
@@ -45,8 +45,6 @@ BENCHMARK(BM_RouterDijkstraResolve)->Arg(1000);
 BENCHMARK(BM_RouterDijkstraResolve)->Arg(2000);
 BENCHMARK(BM_RouterDijkstraResolve)->Arg(5000);
 BENCHMARK(BM_RouterDijkstraResolve)->Arg(10000);
-BENCHMARK(BM_RouterDijkstraResolve)->Arg(20000);
-BENCHMARK(BM_RouterDijkstraResolve)->Arg(50000);
 
 static void BM_RouterDijkstraResolve_Boost(benchmark::State &state) {
     using namespace boost;
@@ -62,16 +60,16 @@ static void BM_RouterDijkstraResolve_Boost(benchmark::State &state) {
     std::vector<int> weights;
     std::vector<Vertex> vertices(state.range());
 
-    for (int i = 0; i < state.range(); ++i) {
-        vertices[i] = i;
-    }
-
-    for (int i = 0; i < state.range(); ++i) {
-        for (int j = i + 1; j < state.range(); ++j) {
-            if (distro_(gen_) % 2 == 0) {
-                edges.emplace_back(i, j);
-                weights.push_back(distro_(gen_) % 100 + 1);
-            }
+    uint64_t cnt_edges = 0;
+    std::set<std::pair<uint64_t, uint64_t> > edge_set;
+    while (cnt_edges < state.range() * state.range() / 10) {
+        uint64_t u = distro_(gen_);
+        uint64_t v = distro_(gen_);
+        if (u != v && edge_set.find({u, v}) == edge_set.end()) {
+            edges.emplace_back(u, v);
+            weights.push_back(distro_(gen_) % 100 + 1);
+            edge_set.insert({u, v});
+            ++cnt_edges;
         }
     }
 
@@ -89,7 +87,6 @@ BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(1000);
 BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(2000);
 BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(5000);
 BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(10000);
-BENCHMARK(BM_RouterDijkstraResolve_Boost)->Arg(20000);
 
 static void BM_AddRouter(benchmark::State &state) {
     std::random_device rd_;
